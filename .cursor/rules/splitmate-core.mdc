@@ -1,0 +1,1191 @@
+---
+description: SplitMate全体の要件、設計、実装手順、禁止事項を強制するプロジェクト共通ルール
+globs:
+alwaysApply: true
+---
+
+# SplitMate Core Rule
+
+## 1. Purpose
+
+This rule controls all AI-assisted work in the SplitMate repository.
+
+It applies to:
+
+* Planning
+* Investigation
+* UI implementation
+* Frontend implementation
+* Backend implementation
+* Database changes
+* Testing
+* Refactoring
+* Documentation
+* Bug fixing
+* Code review
+
+The goal is to prevent:
+
+* Requirement drift
+* Unapproved feature additions
+* Duplicate implementations
+* Architecture violations
+* Destructive changes
+* Mockup misinterpretation
+* Unsafe settlement logic
+* Outdated documentation
+
+---
+
+# 2. Required Source Documents
+
+Before making any code change, read the relevant authoritative documents.
+
+Always read:
+
+```text
+PRODUCT_CHARTER.md
+docs/architecture/ARCHITECTURE.md
+docs/current/CURRENT_STATE.md
+```
+
+Also read:
+
+```text
+docs/adr/0001-initial-architecture.md
+```
+
+For UI work, also read:
+
+```text
+docs/ui/MOCKUP_INDEX.md
+```
+
+For API work, read when present:
+
+```text
+docs/api/API_SPEC.md
+```
+
+For database work, read when present:
+
+```text
+docs/database/DATABASE_DESIGN.md
+```
+
+Do not claim that a document was read unless it was actually opened and inspected.
+
+If a required document does not exist:
+
+1. Stop.
+2. Report the exact missing path.
+3. Do not modify code.
+4. Do not invent its contents.
+
+---
+
+# 3. Authority Order
+
+When sources conflict, use this priority:
+
+1. `PRODUCT_CHARTER.md`
+2. Accepted ADRs in `docs/adr/`
+3. `docs/architecture/ARCHITECTURE.md`
+4. `docs/ui/MOCKUP_INDEX.md`
+5. Referenced mockup images
+6. `docs/api/API_SPEC.md`
+7. `docs/database/DATABASE_DESIGN.md`
+8. `docs/current/CURRENT_STATE.md`
+9. Existing implementation
+10. AI suggestions
+
+Rules:
+
+* Product Charter controls product scope and business behavior.
+* ADRs control accepted architectural decisions.
+* Architecture controls technical structure.
+* Mockups control visual structure.
+* Existing code is not automatically correct.
+* Do not silently resolve conflicts.
+* Report conflicts before implementation.
+
+---
+
+# 4. Mandatory Pre-Change Procedure
+
+Before modifying code:
+
+1. Read the required documents.
+2. Inspect the current repository structure.
+3. Search for existing implementations related to the request.
+4. Identify the current active implementation.
+5. Identify affected files.
+6. Identify affected business rules.
+7. Identify relevant tests.
+8. Summarize the current state.
+9. Explain the proposed change.
+10. State what will not be changed.
+
+When the user requests investigation or planning only:
+
+* Do not edit files.
+* Do not create files.
+* Do not run destructive commands.
+* Return only findings and the proposed plan.
+
+Do not begin implementation when the user explicitly asked for review before changes.
+
+---
+
+# 5. No Guessing Rule
+
+Do not guess or invent:
+
+* Missing requirements
+* Missing mockup behavior
+* API contracts
+* Database fields
+* Settlement rules
+* Rounding behavior
+* Authentication behavior
+* Archive behavior
+* Member-removal behavior
+* Responsive behavior
+* Deployment configuration
+* Environment variables
+
+When required information is unclear:
+
+1. Identify the exact ambiguity.
+2. Explain the affected implementation.
+3. Stop before modifying code.
+4. Ask for a decision.
+
+Do not choose a convenient interpretation without approval.
+
+---
+
+# 6. Scope Control
+
+Implement only requirements approved by:
+
+```text
+PRODUCT_CHARTER.md
+```
+
+Do not add:
+
+* Authentication
+* Signup
+* Login
+* OAuth
+* JWT
+* Email invitation
+* User-account management
+* Role-based access control
+* Multi-currency conversion
+* Exchange-rate APIs
+* Receipt OCR
+* Receipt image analysis
+* AI categorization
+* AI spending advice
+* Budget management
+* Payment processing
+* Bank integration
+* Card integration
+* Native mobile applications
+* Push notifications
+* External-service scraping
+* External-service import
+* Subscription billing
+* Admin console
+* Dark mode
+
+Do not implement future-phase features merely because:
+
+* They appear in a mockup
+* They are technically easy
+* They seem useful
+* A library provides them
+* The AI prefers them
+
+Future features require an explicit Product Charter update.
+
+---
+
+# 7. Repository Structure
+
+The approved repository contains one frontend and one backend.
+
+Expected structure:
+
+```text
+splitmate/
+├── PRODUCT_CHARTER.md
+├── README.md
+├── frontend/
+├── backend/
+├── docs/
+├── .cursor/
+├── docker-compose.yml
+└── .env.example
+```
+
+Do not create:
+
+* A second frontend
+* A second backend
+* A second routing system
+* Duplicate API clients
+* Duplicate design systems
+* Parallel legacy and replacement implementations
+* Temporary replacement directories that remain in the repository
+
+Before creating a new file, search for an existing file with the same responsibility.
+
+Prefer modifying the active implementation over creating a competing one.
+
+---
+
+# 8. Architecture Rules
+
+The approved architecture is:
+
+```text
+React + TypeScript + Vite
+Spring Boot + Java 21
+PostgreSQL
+Flyway
+REST API
+Docker Compose
+CSS Modules
+TanStack Query
+React Hook Form
+Zod
+Recharts
+```
+
+Do not replace or add major frameworks without an ADR.
+
+Do not introduce:
+
+* Next.js
+* GraphQL
+* Redux
+* Microservices
+* Event sourcing
+* CQRS
+* Firebase as the primary database
+* MongoDB as the primary database
+* Tailwind CSS
+* styled-components
+* Emotion
+* Another backend runtime
+
+unless an accepted ADR explicitly approves the change.
+
+---
+
+# 9. Frontend Rules
+
+## 9.1 Responsibility
+
+Frontend code handles:
+
+* Presentation
+* User interaction
+* Routing
+* Client-side validation
+* Responsive behavior
+* Loading states
+* Error states
+* API requests
+* Temporary UI state
+* Chart rendering
+
+Frontend code must not be authoritative for:
+
+* Persistent project state
+* Persistent expense state
+* Settlement completion state
+* Archive state
+* Final settlement calculations
+
+---
+
+## 9.2 Data access
+
+Components must not call `fetch` directly.
+
+All server access must go through:
+
+```text
+frontend/src/api/
+```
+
+or approved feature-level query hooks.
+
+Do not scatter API URLs through components.
+
+Do not duplicate response transformations across pages.
+
+---
+
+## 9.3 State management
+
+Use:
+
+* TanStack Query for server state
+* React Hook Form for form state
+* Zod for form schemas
+* Local component state for small UI state
+* Narrowly scoped context only when necessary
+
+Do not introduce Redux for the MVP.
+
+Do not duplicate server state into global client state without a documented reason.
+
+---
+
+## 9.4 Components
+
+Prefer:
+
+* Small reusable components
+* Feature-based organization
+* Shared form logic
+* Shared business-independent presentation components
+
+Do not:
+
+* Create one component per mockup image
+* Duplicate desktop and smartphone business logic
+* Put all page logic into one large component
+* Generalize a component before there are at least two real uses
+* Create generic abstractions without a current requirement
+
+---
+
+## 9.5 Dummy data
+
+Dummy data must be centralized under approved mock or fixture directories.
+
+Allowed examples:
+
+```text
+frontend/src/mocks/fixtures/
+frontend/src/mocks/mockRepositories/
+```
+
+Do not hard-code project names, member names, balances, expenses, or chart values throughout JSX.
+
+Presentation components must receive data through props or hooks.
+
+The switch from mock data to API data must not require rewriting presentation components.
+
+---
+
+# 10. UI Mockup Rules
+
+Before implementing or changing UI:
+
+1. Read `docs/ui/MOCKUP_INDEX.md`.
+2. Identify the target screen.
+3. Resolve every listed image path from the repository root.
+4. Verify that every required image exists.
+5. Open every listed desktop image.
+6. Open every listed smartphone image.
+7. Compare the layouts.
+8. Identify responsive differences.
+9. Identify continuous/event differences.
+10. Identify visual defects.
+11. Identify reusable components.
+12. Explain the implementation plan.
+
+Do not infer the design from file names alone.
+
+If a required mockup is missing, respond:
+
+```text
+UI implementation stopped.
+
+Missing mockup:
+- <exact repository-relative path>
+
+Target screen:
+- <screen name>
+
+No UI code was modified.
+```
+
+---
+
+## 10.1 Mockup interpretation
+
+Mockups define:
+
+* Layout
+* Information hierarchy
+* Component placement
+* Navigation placement
+* Desktop and smartphone visual behavior
+* Modal and full-page presentation
+* Collapsed and expanded states
+
+Mockups do not override business rules.
+
+Do not reproduce:
+
+* Overlapping text
+* Cropped values
+* Decimal yen values
+* Contradictory sample totals
+* Generated-image artifacts
+* Invalid navigation behavior
+* Profile features that imply authentication
+* Inaccessible touch targets
+
+Dummy values shown in mockups are not production constants.
+
+---
+
+## 10.2 Responsive implementation
+
+Use one React application.
+
+Do not create a separate mobile application.
+
+Desktop and smartphone must share:
+
+* Domain types
+* API hooks
+* Form schemas
+* Business-independent feature logic
+
+Layout containers may differ where required.
+
+Desktop patterns:
+
+* Sidebar
+* Multi-column layout
+* Modal form
+* Wide charts
+
+Smartphone patterns:
+
+* Bottom navigation
+* Single-column layout
+* Full-page form or sheet
+* Collapsible analytics
+* Stacked filters
+
+Do not implement mobile by merely shrinking the desktop layout.
+
+---
+
+# 11. Backend Rules
+
+## 11.1 Package organization
+
+Use package-by-feature.
+
+Approved feature areas:
+
+```text
+project
+expense
+settlement
+analytics
+common
+```
+
+Do not create one global directory containing every controller, service, repository, DTO, and entity.
+
+---
+
+## 11.2 Layer responsibilities
+
+Controllers:
+
+* Accept requests
+* Validate DTOs
+* Call services
+* Return DTOs
+* Select HTTP statuses
+
+Controllers must not:
+
+* Contain settlement algorithms
+* Access repositories directly
+* Return JPA entities
+* Enforce complex domain rules
+
+Services:
+
+* Enforce business rules
+* Define transactions
+* Coordinate repositories
+* Call pure calculation components
+
+Repositories:
+
+* Perform persistence operations
+* Contain no UI formatting
+* Contain no HTTP behavior
+
+DTOs:
+
+* Must be separate from JPA entities
+* Must not expose unnecessary internal IDs
+* Must use stable API enums and integer amounts
+
+---
+
+## 11.3 Transactions
+
+Use transactions for:
+
+* Project creation with initial members
+* Expense creation with participants
+* Expense update with allocations
+* Expense deletion
+* Settlement generation
+* Settlement completion
+* Event archive
+
+Do not leave partially persisted aggregates.
+
+---
+
+# 12. Money Rules
+
+All monetary values are integer JPY.
+
+Use:
+
+```text
+Java: long or Long
+PostgreSQL: BIGINT
+JSON: integer
+TypeScript: number with integer validation
+```
+
+Do not use:
+
+* `double`
+* `float`
+* `BigDecimal` for MVP yen amounts unless an ADR changes the decision
+* PostgreSQL `REAL`
+* PostgreSQL `FLOAT`
+* PostgreSQL `DOUBLE PRECISION`
+
+All displayed money must:
+
+* Contain no decimal places
+* Use one shared formatting utility
+* Use thousands separators
+* Use consistent positive and negative notation
+
+Do not format money manually inside individual components.
+
+---
+
+# 13. Expense Allocation Rules
+
+Each expense is split equally among selected participants.
+
+Given:
+
+```text
+baseShare = floor(amount / participantCount)
+remainder = amount mod participantCount
+```
+
+Allocate:
+
+* `baseShare` to every participant
+* One additional yen to the first `remainder` participants
+
+Participant order must be deterministic:
+
+1. Project member display order
+2. Member UUID as tie-breaker
+
+The allocation sum must equal the expense amount.
+
+Allocated shares must be persisted.
+
+Do not:
+
+* Use random remainder allocation
+* Recalculate historical shares from changed member order
+* Lose remainder yen
+* Introduce decimal shares
+
+---
+
+# 14. Settlement Rules
+
+Settlement calculations must be:
+
+* Server-side authoritative
+* Deterministic
+* Based on persisted allocated shares
+* Tested independently from Spring where practical
+
+Member balance:
+
+```text
+balance = paid amount - burden amount
+```
+
+Interpretation:
+
+* Positive: receives money
+* Negative: pays money
+* Zero: no transfer required
+
+Use direct debtor-to-creditor transfers.
+
+Do not create unnecessary intermediate transfers.
+
+Tie-breaking must remain deterministic.
+
+---
+
+# 15. Settlement Rounding Rules
+
+Calculate exact one-yen balances and transfers first.
+
+Apply project rounding only to final settlement transfers.
+
+Approved rounding:
+
+```text
+HALF_UP
+```
+
+Approved units:
+
+```text
+1
+10
+100
+1000
+```
+
+Persist or expose:
+
+* Exact amount
+* Rounded amount
+* Rounding difference
+
+Do not silently discard rounding differences.
+
+Do not display decimal yen values.
+
+Do not invent a different rounding rule.
+
+---
+
+# 16. Settlement Snapshot Rules
+
+Use immutable settlement runs.
+
+Settlement completion status belongs to:
+
+```text
+one SettlementTransfer
+inside one SettlementRun
+```
+
+When a relevant expense changes:
+
+1. Existing current run becomes stale or superseded.
+2. A new run is generated.
+3. Previous completion flags remain attached to the previous run.
+4. Completion flags are not copied automatically.
+
+Never remap completed status using:
+
+* Row index
+* Array position
+* Display order
+* Amount-only matching
+* Unverified sender/receiver matching
+
+If completed transfers exist and recalculation occurs, preserve history and expose the state clearly.
+
+---
+
+# 17. Continuous Project Rules
+
+Continuous projects use monthly settlement scope.
+
+The selected month must consistently control:
+
+* Expense list
+* KPI cards
+* Settlement result
+* Category analytics
+* Member analytics
+* Monthly summary
+
+Use payment date, not creation timestamp, to determine the month.
+
+Historical months must remain available.
+
+Continuous projects do not use the event settlement-completion archive flow.
+
+---
+
+# 18. Event Project Rules
+
+Event projects use the full project as one settlement scope.
+
+Event projects:
+
+* Do not show project-detail analytics charts in MVP
+* Support settlement completion
+* Support archive after confirmation
+* Become read-only after archive
+
+Archived event projects must reject:
+
+* Expense creation
+* Expense update
+* Expense deletion
+* Project editing
+* Member addition
+* Member removal
+* Settlement-status modification
+
+This restriction must be enforced by the backend, not only by hidden buttons.
+
+---
+
+# 19. Member Rules
+
+Members are project-local identities.
+
+A member with the same name in two projects is not the same entity.
+
+At least one member is required.
+
+Referenced members must not be physically deleted.
+
+Approved behavior:
+
+* Unused member: may be removed
+* Referenced member: deactivate only
+* Deactivated member remains in historical records
+* Deactivated member is unavailable for new expenses
+
+Do not invent destructive member-removal behavior.
+
+---
+
+# 20. Date Rules
+
+Expense payment dates are business dates.
+
+Use:
+
+```text
+Backend: LocalDate
+API: YYYY-MM-DD
+```
+
+Do not use UTC timestamps for payment dates.
+
+Creation and update timestamps may use timezone-aware timestamps.
+
+Monthly filtering must use `paidOn`.
+
+---
+
+# 21. Database Rules
+
+Use PostgreSQL and Flyway.
+
+Migration path:
+
+```text
+backend/src/main/resources/db/migration/
+```
+
+Do not edit an already-applied migration.
+
+Create a new migration for every schema change.
+
+Use database constraints for:
+
+* Required fields
+* Unique public tokens
+* Foreign keys
+* Positive amounts where practical
+* Valid enum values where applicable
+
+Do not rely only on application validation.
+
+Do not create destructive cascade behavior without approved documentation.
+
+---
+
+# 22. API Rules
+
+Use REST and JSON.
+
+Money values are JSON integers.
+
+Dates are:
+
+```text
+Payment date: YYYY-MM-DD
+Timestamp: ISO 8601
+```
+
+Enums use stable uppercase English identifiers.
+
+Do not return JPA entities.
+
+Use one centralized error response format.
+
+Expected error fields:
+
+```text
+code
+message
+fieldErrors
+timestamp
+```
+
+Use appropriate HTTP statuses:
+
+* `400` invalid request
+* `404` missing resource
+* `409` state or optimistic-lock conflict
+* `500` unexpected server failure
+
+Do not return raw stack traces to the frontend.
+
+---
+
+# 23. Security Rules
+
+MVP has no authentication.
+
+Do not create authentication code.
+
+Projects use unpredictable public tokens.
+
+Do not expose sequential database IDs in project URLs.
+
+Do not log:
+
+* Full project tokens
+* Database credentials
+* Environment secrets
+* Full request bodies containing user-entered notes
+
+CORS must be restricted to approved frontend origins.
+
+Production must use HTTPS.
+
+The UI must not claim that project URLs provide authenticated privacy.
+
+---
+
+# 24. Error and Empty States
+
+Every data-driven page must support:
+
+* Loading
+* Success
+* Empty
+* Error
+
+Required examples:
+
+* No projects
+* No archived projects
+* No expenses
+* No expenses in selected month
+* Project not found
+* Project archived
+* Failed save
+* Failed loading
+* Analytics unavailable
+* Conflict requiring reload
+
+Do not leave blank screens after failure.
+
+Do not silently ignore failed requests.
+
+---
+
+# 25. Testing Rules
+
+Tests are required for business-critical behavior.
+
+Backend unit tests must cover:
+
+* Expense allocation
+* Remainder distribution
+* Member balances
+* Settlement optimization
+* Deterministic tie-breaking
+* Rounding
+* Rounding differences
+* Settlement snapshot generation
+* Archive mutation guard
+
+Backend integration tests must cover:
+
+* Project creation
+* Expense persistence
+* Monthly filtering
+* Event settlement scope
+* Settlement completion
+* Recalculation
+* Archived-project rejection
+* Flyway migrations
+
+Frontend tests must cover critical behavior such as:
+
+* Project-form validation
+* Expense-form validation
+* Default participant selection
+* Archived-project UI restrictions
+* Money formatting
+* Loading/error display
+* Mobile analytics collapse
+
+Do not remove or weaken existing tests merely to make a change pass.
+
+When behavior changes intentionally, update tests and documentation together.
+
+---
+
+# 26. Refactoring Rules
+
+Before refactoring:
+
+1. Identify current behavior.
+2. Identify affected tests.
+3. Confirm the refactor does not change requirements.
+4. Explain why the refactor is needed.
+5. Keep changes limited to the requested area.
+
+Do not combine unrelated refactoring with feature implementation.
+
+Do not rename broad directory structures without approval.
+
+Do not rewrite working code solely because another style is preferred.
+
+Do not introduce abstractions without a concrete current use.
+
+---
+
+# 27. Command Safety
+
+Before running a command, explain commands that may:
+
+* Delete files
+* Reset Git state
+* Change dependencies
+* Modify database data
+* Rewrite migrations
+* Remove Docker volumes
+* Force-push
+* Change branches
+* Replace configuration
+
+Do not run destructive commands without explicit approval.
+
+Prohibited without explicit approval:
+
+```text
+git reset --hard
+git clean -fd
+git push --force
+rm -rf
+docker compose down -v
+DROP DATABASE
+DROP TABLE
+TRUNCATE
+```
+
+Do not install dependencies unrelated to the approved task.
+
+When adding a dependency:
+
+1. State its purpose.
+2. Check whether an existing dependency already solves the problem.
+3. Use a maintained dependency.
+4. Update relevant documentation.
+
+---
+
+# 28. Documentation Update Rules
+
+After approved implementation, update:
+
+```text
+docs/current/CURRENT_STATE.md
+```
+
+Record:
+
+* What changed
+* What files changed
+* What is complete
+* What remains
+* Known limitations
+* Tests run
+* Next recommended step
+
+Update Architecture or create an ADR when changing:
+
+* Technology stack
+* Repository structure
+* Persistence model
+* Public-token strategy
+* Calculation rules
+* Settlement snapshots
+* State-management strategy
+* Styling strategy
+* API style
+* Authentication policy
+* Deployment model
+
+Do not change architecture through code alone.
+
+---
+
+# 29. Response Format Before Implementation
+
+Before code changes, respond with:
+
+```text
+## Understanding
+
+- Current state:
+- Requested change:
+- Relevant requirements:
+- Explicit non-goals:
+
+## References Read
+
+- PRODUCT_CHARTER.md
+- docs/architecture/ARCHITECTURE.md
+- docs/adr/...
+- docs/current/CURRENT_STATE.md
+- Additional relevant files:
+
+## Existing Implementation
+
+- Relevant files:
+- Reusable code:
+- Conflicts or risks:
+
+## Affected Files
+
+- File path:
+  - Planned change:
+
+## Implementation Plan
+
+1.
+2.
+3.
+
+## Verification Plan
+
+- Tests:
+- UI verification:
+- Responsive verification:
+- Business-rule verification:
+
+No code has been modified yet.
+```
+
+Do not claim that no code was modified if edits were already made.
+
+---
+
+# 30. Response Format After Implementation
+
+After code changes, respond with:
+
+```text
+## Completed
+
+- Implemented:
+- Not implemented:
+
+## Changed Files
+
+- File path:
+  - Change summary:
+
+## Verification
+
+- Commands run:
+- Tests passed:
+- Tests not run:
+- Manual checks:
+
+## Documentation
+
+- CURRENT_STATE.md updated: yes/no
+- Architecture updated: yes/no
+- ADR required: yes/no
+
+## Remaining Issues
+
+- None
+or
+- Exact remaining issue:
+```
+
+Do not say all tests passed unless they were actually run and passed.
+
+Do not hide failed or unrun checks.
+
+---
+
+# 31. Current Implementation Priority
+
+Current priority:
+
+```text
+Build the responsive SplitMate UI using centralized dummy data,
+while preserving the component and data boundaries required for
+later Spring Boot and PostgreSQL integration.
+```
+
+Initial screen priority:
+
+1. App shell
+2. Home
+3. Project creation
+4. Continuous project detail
+5. Event project detail
+6. Expense creation
+7. Analytics
+8. Responsive verification
+
+Do not begin future-phase functionality.
+
+---
+
+# 32. Final Mandatory Rule
+
+When requirements, mockups, architecture, current code, or user instructions are inconsistent:
+
+* Stop.
+* Identify the exact conflict.
+* Cite the affected files and sections.
+* Do not guess.
+* Do not modify code until the conflict is resolved.
