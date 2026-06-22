@@ -1,0 +1,33 @@
+.shell {
+  display: flex;
+  min-width: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(91, 103, 241, 0.08), transparent 32rem),
+    var(--color-background);
+}
+
+.contentFrame {
+  min-width: 0;
+  flex: 1;
+}
+
+.content {
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+  padding: var(--space-8) var(--layout-page-gutter-mobile)
+    calc(var(--navigation-mobile-height) + var(--space-8) + env(safe-area-inset-bottom));
+}
+
+@media (min-width: 768px) {
+  .content {
+    padding: var(--space-10) var(--layout-page-gutter-tablet);
+  }
+}
+
+@media (min-width: 1200px) {
+  .content {
+    padding: var(--space-10) var(--layout-page-gutter-desktop);
+  }
+}

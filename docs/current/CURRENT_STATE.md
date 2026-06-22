@@ -6,9 +6,9 @@
 | ------------------------------------ | ------------------------------------------------- |
 | Product                              | SplitMate                                         |
 | Document                             | Current State                                     |
-| Status                               | Documentation and implementation preparation      |
-| Last updated                         | 2026-06-21                                        |
-| Implementation phase                 | Phase 1: Documentation and repository preparation |
+| Status                               | Frontend foundation initialized                   |
+| Last updated                         | 2026-06-23                                        |
+| Implementation phase                 | Phase 2: Static frontend foundation               |
 | Source of truth for current progress | This document                                     |
 
 This document records the actual current state of the SplitMate repository.
@@ -32,7 +32,7 @@ Do not record planned functionality as completed functionality.
 
 # 1. Current Summary
 
-SplitMate is currently in the pre-implementation preparation stage.
+SplitMate is currently in the frontend foundation implementation stage.
 
 The following work has been completed:
 
@@ -48,12 +48,16 @@ The following work has been completed:
 * The Cursor Project Rule frontmatter has been normalized.
 * `.gitignore` has been created.
 * The repository has been initialized as a Git repository.
+* One React, TypeScript, and Vite frontend has been initialized under `frontend/`.
+* The approved frontend base directory structure has been created.
+* Shared CSS design tokens, global base styles, and centralized breakpoint variables have been added.
+* The approved route skeleton has been added.
+* A responsive application shell has been added with desktop sidebar and smartphone bottom navigation.
 
-Application code has not yet been implemented.
+Application code has started with the frontend foundation only.
 
 The following do not currently exist as verified completed implementations:
 
-* React frontend
 * Spring Boot backend
 * PostgreSQL schema
 * Flyway migrations
@@ -64,7 +68,7 @@ The following do not currently exist as verified completed implementations:
 * Automated tests
 * Deployment configuration
 
-The immediate goal is to complete the remaining initial documentation and repository setup, then begin the frontend implementation using centralized dummy data.
+The immediate goal is to implement the first detailed static UI screens using centralized dummy data while preserving the frontend boundaries required for later API integration.
 
 ---
 
@@ -546,20 +550,89 @@ frontend/
 Current status:
 
 ```text
-Not implemented
+Foundation initialized
 ```
 
-Not yet verified or completed:
+Completed in the first frontend implementation unit:
 
 * Vite initialization
 * React configuration
 * TypeScript configuration
-* Routing
-* CSS Modules
-* Design tokens
+* `npm` dependency installation
+* Routing skeleton
+* CSS Modules setup
+* Shared design tokens
+* Centralized responsive breakpoint variables
+* Global reset and base typography
 * App shell
 * Desktop sidebar
 * Smartphone bottom navigation
+* Placeholder pages for approved routes
+
+Installed runtime dependencies:
+
+* `react`
+* `react-dom`
+* `react-router-dom`
+
+Installed development dependencies:
+
+* `vite`
+* `typescript`
+* `@vitejs/plugin-react`
+* `@types/react`
+* `@types/react-dom`
+
+Created base structure:
+
+```text
+frontend/src/
+├── app/
+├── components/
+│   ├── layout/
+│   ├── navigation/
+│   ├── feedback/
+│   └── common/
+├── features/
+├── pages/
+├── api/
+├── mocks/
+├── hooks/
+├── utils/
+├── types/
+├── styles/
+└── main.tsx
+```
+
+Approved routes currently defined:
+
+```text
+/
+/projects/new
+/p/:publicToken
+/p/:publicToken/expenses/new
+/expenses/new
+/analytics
+/p/:publicToken/edit
+```
+
+Verification commands run:
+
+* `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" install`
+* `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" run build`
+* Temporary Vite dev server route check using Python `urllib.request`
+
+Verification results:
+
+* Install: passed
+* Build: passed
+* TypeScript check: passed through `tsc -b` inside `npm run build`
+* Lint script: not present
+* IDE diagnostics for `frontend/src`: no linter errors found
+* Route HTTP responses: all approved routes returned `200`
+
+Not yet verified or completed:
+
 * Home page
 * Project creation page
 * Continuous project page
@@ -569,6 +642,8 @@ Not yet verified or completed:
 * Centralized fixtures
 * Mock repositories
 * Tests
+* Browser-based visual verification
+* Browser-based keyboard navigation verification
 
 ---
 
@@ -924,10 +999,10 @@ Control:
 Current phase:
 
 ```text
-Phase 1: Documentation and repository preparation
+Phase 2: Static frontend foundation
 ```
 
-Phase 1 completion requires:
+Phase 1 completion status:
 
 * [x] `PRODUCT_CHARTER.md`
 * [x] `docs/ui/MOCKUP_INDEX.md`
@@ -938,10 +1013,34 @@ Phase 1 completion requires:
 * [x] `docs/current/CURRENT_STATE.md`
 * [ ] Cursor Project Rule recognition verified
 * [x] All 28 mockup paths verified
-* [ ] `README.md`
+* [x] `README.md`
 * [x] Base repository directories verified
 * [x] Initial Git repository state verified
 * [x] `.gitignore`
+
+Phase 2 frontend foundation status:
+
+* [x] React, TypeScript, and Vite frontend initialized
+* [x] Frontend dependencies installed with npm
+* [x] Frontend base directory structure created
+* [x] Shared design tokens created
+* [x] Global reset and base typography created
+* [x] Centralized breakpoint variables created
+* [x] Approved route skeleton created
+* [x] Responsive AppShell created
+* [x] DesktopSidebar created
+* [x] MobileBottomNavigation created
+* [x] Placeholder pages created
+* [ ] Detailed Home UI
+* [ ] Detailed Project Creation UI
+* [ ] Detailed Continuous Project Detail UI
+* [ ] Detailed Event Project Detail UI
+* [ ] Expense form
+* [ ] Analytics charts
+* [ ] Centralized dummy fixture data
+* [ ] Mock repositories
+* [ ] Automated frontend tests
+* [ ] Browser-based responsive visual verification
 
 API and database specifications are not required to complete the UI-only part of Phase 1.
 
@@ -1055,25 +1154,31 @@ After repository and mockup verification:
 Status:
 
 ```text
-Not started
+Completed
 ```
 
 ---
 
 ## Step 6: Static UI with dummy data
 
-Implement in this order:
+Next recommended implementation order:
 
-1. App shell
-2. Home
-3. Project creation
-4. Continuous project detail
-5. Event project detail
-6. Expense creation
-7. Analytics
-8. Responsive verification
+1. Home / Project List detailed static UI
+2. Project creation detailed static UI
+3. Continuous project detail static UI
+4. Event project detail static UI
+5. Expense creation UI
+6. Analytics UI
+7. Centralized dummy fixture data
+8. Responsive visual verification
 
 Use centralized typed fixtures.
+
+Status:
+
+```text
+Not started
+```
 
 ---
 
@@ -1095,6 +1200,37 @@ Backend implementation requires the relevant approved API and database specifica
 ---
 
 # 16. Screen Implementation Tracking
+
+## Application Shell
+
+Status:
+
+```text
+Foundation completed
+```
+
+References inspected during frontend foundation:
+
+```text
+docs/ui/mockups/pc/01_home.png
+docs/ui/mockups/smartphone/01_home_sp_1.png
+docs/ui/mockups/smartphone/02_home_sp_2.png
+docs/ui/mockups/pc/02_project_create_1.png
+docs/ui/mockups/smartphone/03_project_create_1.png
+```
+
+Progress:
+
+* Desktop sidebar: implemented
+* Smartphone bottom navigation: implemented
+* Shared page content area: implemented
+* Mobile bottom-navigation spacing guard: implemented
+* Horizontal overflow guard: implemented in global base styles and shell layout
+* Route navigation: implemented for approved route skeleton
+* Visual browser verification: not completed
+* Detailed screen UI: not implemented
+
+---
 
 ## Home / Project List
 
@@ -1329,19 +1465,23 @@ Progress:
 
 # 17. Test Status
 
-No application tests currently exist.
+No automated application tests currently exist.
 
 Current test status:
 
-| Area                           | Status      |
-| ------------------------------ | ----------- |
-| Frontend unit tests            | Not started |
-| Frontend component tests       | Not started |
-| Backend unit tests             | Not started |
-| Backend integration tests      | Not started |
-| End-to-end tests               | Not started |
-| Manual responsive verification | Not started |
-| Settlement test cases          | Not started |
+| Area                           | Status                                           |
+| ------------------------------ | ------------------------------------------------ |
+| Frontend unit tests            | Not started                                      |
+| Frontend component tests       | Not started                                      |
+| Frontend build                 | Passed with `npm run build`                      |
+| Frontend TypeScript check      | Passed through `tsc -b` inside `npm run build`   |
+| Frontend lint script           | Not present                                      |
+| Route HTTP smoke check         | Passed for all approved routes                   |
+| Backend unit tests             | Not started                                      |
+| Backend integration tests      | Not started                                      |
+| End-to-end tests               | Not started                                      |
+| Manual responsive verification | Source-level shell structure only; browser check not completed |
+| Settlement test cases          | Not started                                      |
 
 Do not state that any tests pass until they have been executed.
 
@@ -1349,7 +1489,7 @@ Do not state that any tests pass until they have been executed.
 
 # 18. Known Deviations
 
-No code deviations are currently recorded because implementation has not started.
+Frontend implementation has started with a foundation-only scope.
 
 Potential mockup-to-requirement differences already documented include:
 
@@ -1361,6 +1501,14 @@ Potential mockup-to-requirement differences already documented include:
 * JPY is fixed even where a mockup visually resembles a currency selector.
 
 These must be handled according to document priority.
+
+Current known limitations from the frontend foundation:
+
+* Placeholder pages are intentionally minimal and do not implement full feature screens.
+* Desktop sidebar and smartphone bottom navigation use text-only temporary navigation markers, not a final icon system.
+* `/p/demo-project` is used only as a route-verification link and is not backed by project data.
+* Browser-based visual inspection for desktop and smartphone has not been completed.
+* No backend, API client, database, fixtures, mock repositories, forms, charts, or business calculations exist yet.
 
 ---
 
@@ -1388,7 +1536,7 @@ Use Git history for detailed file-level history, but keep this document accurate
 
 # 20. Handoff Summary
 
-The repository is currently prepared at the requirements, architecture, mockup-verification, and basic Git level.
+The repository is currently prepared at the requirements, architecture, mockup-verification, basic Git, and frontend foundation level.
 
 Verified completed preparation:
 
@@ -1399,11 +1547,13 @@ Verified completed preparation:
 5. The initial README exists.
 6. `.gitignore` exists.
 7. The repository has been initialized with Git.
+8. One React, TypeScript, and Vite frontend exists under `frontend/`.
+9. The responsive AppShell, DesktopSidebar, MobileBottomNavigation, and approved route skeleton exist.
 
-The first code implementation must be the responsive frontend using centralized dummy data.
+The first code implementation has created the responsive frontend foundation.
 
 Backend, API, and database implementation must wait until their detailed contracts are documented.
 
 The next recommended task is:
 
-> Initialize the React, TypeScript, and Vite frontend, then create the app shell and shared design tokens.
+> Implement the Home / Project List detailed static UI from inspected mockups, using centralized dummy data rather than hard-coded values in presentation components.
