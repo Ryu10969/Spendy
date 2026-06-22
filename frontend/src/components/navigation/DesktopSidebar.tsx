@@ -2,6 +2,11 @@ import { NavLink } from "react-router-dom";
 import { primaryNavigationItems } from "./navigationItems";
 import styles from "./DesktopSidebar.module.css";
 
+const routeSkeletonItems = [
+  { label: "Project detail", to: "/p/demo-project" },
+  { label: "Global expense", to: "/expenses/new" },
+];
+
 export function DesktopSidebar() {
   return (
     <aside className={styles.sidebar} aria-label="Desktop navigation">
@@ -24,15 +29,22 @@ export function DesktopSidebar() {
         ))}
       </nav>
 
-      <div className={styles.secondaryBlock} aria-label="Route verification">
+      <nav className={styles.secondaryBlock} aria-label="Route skeleton navigation">
         <p className={styles.secondaryTitle}>Route skeleton</p>
-        <NavLink to="/p/demo-project" className={styles.secondaryLink}>
-          Project detail
-        </NavLink>
-        <NavLink to="/expenses/new" className={styles.secondaryLink}>
-          Global expense
-        </NavLink>
-      </div>
+        {routeSkeletonItems.map((item) => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            className={({ isActive }) =>
+              isActive
+                ? `${styles.secondaryLink} ${styles.activeLink}`
+                : styles.secondaryLink
+            }
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </nav>
     </aside>
   );
 }

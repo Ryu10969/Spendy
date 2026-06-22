@@ -1227,6 +1227,7 @@ Progress:
 * Mobile bottom-navigation spacing guard: implemented
 * Horizontal overflow guard: implemented in global base styles and shell layout
 * Route navigation: implemented for approved route skeleton
+* Desktop sidebar route skeleton links: corrected to use the same semantic `NavLink` active-state pattern as primary navigation
 * Visual browser verification: not completed
 * Detailed screen UI: not implemented
 
