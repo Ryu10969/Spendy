@@ -18,9 +18,9 @@ The product combines:
 
 ## Current Status
 
-SplitMate is currently in the documentation and repository preparation phase.
+SplitMate is currently in the early static frontend UI implementation phase.
 
-Application implementation has not started yet.
+The React, TypeScript, and Vite frontend foundation has been initialized, and the Home / Project List screen has a detailed dummy-data UI.
 
 Completed documents:
 
@@ -42,13 +42,14 @@ Prepared UI assets:
 
 Not yet implemented:
 
-* React frontend
 * Spring Boot backend
 * PostgreSQL schema
 * Flyway migrations
 * REST API
 * Automated tests
 * Deployment configuration
+
+The remaining detailed frontend screens are still in progress.
 
 For the verified current progress, see:
 
@@ -233,7 +234,8 @@ These features must not be implemented unless the Product Charter is explicitly 
 * Docker
 * Docker Compose
 
-The implementation has not started, so dependency versions are not yet fixed in this README.
+The frontend foundation dependency versions are managed in `frontend/package.json`.
+Backend and database dependency versions are not yet fixed in this README.
 
 ---
 
@@ -562,15 +564,17 @@ Then implement:
 
 ## Setup
 
-Application setup commands are not yet available because the frontend and backend have not been initialized.
+The frontend has been initialized under `frontend/`.
 
-Do not use undocumented setup commands.
+Verified frontend command:
 
-This section must be updated after:
+```bash
+npm --prefix frontend run build
+```
 
-* `frontend/` is initialized
+Full local setup is not complete yet. This section must be expanded after:
+
 * `backend/` is initialized
-* Dependencies are installed
 * Environment variables are defined
 * Local startup commands are verified
 
@@ -600,7 +604,7 @@ Real secrets must never be committed.
 
 ## Testing
 
-No application tests currently exist because implementation has not started.
+No automated application tests currently exist yet.
 
 Planned critical test areas include:
 
@@ -641,15 +645,9 @@ When required information is missing, stop and report the missing requirement in
 
 ## Next Approved Work
 
-The next approved steps are:
+The next approved step is:
 
-1. Verify all required repository documents exist.
-2. Verify Cursor recognizes `.cursor/rules/splitmate-core.mdc` as a Project Rule.
-3. Verify all 28 mockup image paths.
-4. Record the verification results in `docs/current/CURRENT_STATE.md`.
-5. Initialize the React, TypeScript, and Vite frontend.
-6. Create the app shell and centralized design tokens.
-7. Implement the Home screen from dummy data.
+1. Implement the Project Creation detailed static UI from inspected mockups.
 
 Backend, API, and database implementation must not begin before the corresponding API and database specifications are created.
 

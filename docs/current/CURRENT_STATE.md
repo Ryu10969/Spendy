@@ -6,9 +6,9 @@
 | ------------------------------------ | ------------------------------------------------- |
 | Product                              | SplitMate                                         |
 | Document                             | Current State                                     |
-| Status                               | Frontend foundation initialized                   |
-| Last updated                         | 2026-06-23                                        |
-| Implementation phase                 | Phase 2: Static frontend foundation               |
+| Status                               | Frontend foundation and Home UI implemented       |
+| Last updated                         | 2026-06-24                                        |
+| Implementation phase                 | Phase 2: Static frontend UI                       |
 | Source of truth for current progress | This document                                     |
 
 This document records the actual current state of the SplitMate repository.
@@ -32,7 +32,7 @@ Do not record planned functionality as completed functionality.
 
 # 1. Current Summary
 
-SplitMate is currently in the frontend foundation implementation stage.
+SplitMate is currently in the frontend static UI implementation stage.
 
 The following work has been completed:
 
@@ -53,8 +53,10 @@ The following work has been completed:
 * Shared CSS design tokens, global base styles, and centralized breakpoint variables have been added.
 * The approved route skeleton has been added.
 * A responsive application shell has been added with desktop sidebar and smartphone bottom navigation.
+* The Home / Project List detailed UI has been implemented from centralized typed project fixtures.
+* Home now includes project search, active project cards, archived event project cards, reusable project-list components, and project-detail navigation links.
 
-Application code has started with the frontend foundation only.
+Application code has started with the frontend foundation and the first detailed Home screen.
 
 The following do not currently exist as verified completed implementations:
 
@@ -68,7 +70,7 @@ The following do not currently exist as verified completed implementations:
 * Automated tests
 * Deployment configuration
 
-The immediate goal is to implement the first detailed static UI screens using centralized dummy data while preserving the frontend boundaries required for later API integration.
+The immediate goal is to continue implementing the remaining detailed static UI screens using centralized dummy data while preserving the frontend boundaries required for later API integration.
 
 ---
 
@@ -550,10 +552,10 @@ frontend/
 Current status:
 
 ```text
-Foundation initialized
+Foundation initialized; Home / Project List implemented
 ```
 
-Completed in the first frontend implementation unit:
+Completed frontend foundation work:
 
 * Vite initialization
 * React configuration
@@ -568,6 +570,21 @@ Completed in the first frontend implementation unit:
 * Desktop sidebar
 * Smartphone bottom navigation
 * Placeholder pages for approved routes
+
+Completed Home implementation work:
+
+* Centralized typed Home project fixture data
+* Home page header
+* Project search UI
+* Active project section
+* Archived event project section
+* Archived event section collapse and expansion
+* Project cards with project-detail links
+* Project type badges
+* Member avatar display
+* No-projects empty state
+* No-search-results empty state
+* Desktop and smartphone responsive Home layout
 
 Installed runtime dependencies:
 
@@ -621,6 +638,7 @@ Verification commands run:
 * `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" install`
 * `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" run build`
 * Temporary Vite dev server route check using Python `urllib.request`
+* `git diff --check`
 
 Verification results:
 
@@ -630,16 +648,16 @@ Verification results:
 * Lint script: not present
 * IDE diagnostics for `frontend/src`: no linter errors found
 * Route HTTP responses: all approved routes returned `200`
+* Diff whitespace check: passed
 
 Not yet verified or completed:
 
-* Home page
 * Project creation page
 * Continuous project page
 * Event project page
 * Expense form
 * Analytics page
-* Centralized fixtures
+* Centralized fixtures for remaining screens
 * Mock repositories
 * Tests
 * Browser-based visual verification
@@ -999,7 +1017,7 @@ Control:
 Current phase:
 
 ```text
-Phase 2: Static frontend foundation
+Phase 2: Static frontend UI
 ```
 
 Phase 1 completion status:
@@ -1031,13 +1049,14 @@ Phase 2 frontend foundation status:
 * [x] DesktopSidebar created
 * [x] MobileBottomNavigation created
 * [x] Placeholder pages created
-* [ ] Detailed Home UI
+* [x] Detailed Home UI
 * [ ] Detailed Project Creation UI
 * [ ] Detailed Continuous Project Detail UI
 * [ ] Detailed Event Project Detail UI
 * [ ] Expense form
 * [ ] Analytics charts
-* [ ] Centralized dummy fixture data
+* [x] Centralized Home project fixture data
+* [ ] Centralized dummy fixture data for remaining screens
 * [ ] Mock repositories
 * [ ] Automated frontend tests
 * [ ] Browser-based responsive visual verification
@@ -1127,7 +1146,7 @@ The initial README should include:
 * Repository structure
 * Document links
 * Setup status
-* Clear statement that implementation has not started
+* Clear current implementation status
 
 Do not document unverified setup commands as working commands.
 
@@ -1177,8 +1196,28 @@ Use centralized typed fixtures.
 Status:
 
 ```text
-Not started
+In progress
 ```
+
+Completed:
+
+* Home / Project List detailed static UI
+* Centralized typed project fixture data for Home
+* Reusable Home project-list components
+* Search filtering interaction for project names
+* Active and archived event project sections
+* Archived event section collapse and expansion
+* No-projects and no-search-results empty states
+
+Still pending in this static UI phase:
+
+* Project creation detailed static UI
+* Continuous project detail static UI
+* Event project detail static UI
+* Expense creation UI
+* Analytics UI
+* Dummy data for remaining screens
+* Browser-based responsive visual verification
 
 ---
 
@@ -1227,7 +1266,7 @@ Progress:
 * Mobile bottom-navigation spacing guard: implemented
 * Horizontal overflow guard: implemented in global base styles and shell layout
 * Route navigation: implemented for approved route skeleton
-* Desktop sidebar route skeleton links: corrected to use the same semantic `NavLink` active-state pattern as primary navigation
+* Desktop sidebar route skeleton verification section: removed from user-facing sidebar
 * Visual browser verification: not completed
 * Detailed screen UI: not implemented
 
@@ -1238,7 +1277,7 @@ Progress:
 Status:
 
 ```text
-Not started
+Implemented with centralized dummy project data
 ```
 
 References:
@@ -1251,13 +1290,36 @@ docs/ui/mockups/smartphone/02_home_sp_2.png
 
 Progress:
 
-* Desktop mockups inspected: not recorded
-* Smartphone mockups inspected: not recorded
-* Static UI: not started
-* Responsive UI: not started
-* Dummy data: not connected
+* Desktop mockups inspected: yes, `docs/ui/mockups/pc/01_home.png`
+* Smartphone mockups inspected: yes, `docs/ui/mockups/smartphone/01_home_sp_1.png` and `docs/ui/mockups/smartphone/02_home_sp_2.png`
+* Static UI: implemented
+* Responsive UI: implemented in CSS Modules with desktop grid and smartphone single-column layout
+* Dummy data: connected through `frontend/src/mocks/fixtures/projects.ts`
 * API: not connected
-* Verified against mockups: no
+* Project cards: implemented through reusable `ProjectCard`
+* Project type badge: implemented through reusable `ProjectTypeBadge`
+* Member avatars: implemented through reusable `MemberAvatar` and `MemberAvatarGroup`
+* Project search: implemented as client-side case-insensitive project-name filtering
+* Search clear behavior: implemented through the clear button in `SearchInput`
+* Search no-results state: implemented through `EmptyState`
+* No-projects empty state: implemented for the case where project fixture data is empty, with a semantic link to `/projects/new`
+* No-search-results empty state: implemented separately from no-projects, without forcing a new-project CTA
+* Active projects section: implemented for active continuous and active event projects
+* Archived projects section: implemented for archived event projects only
+* Archived projects collapse and expansion: implemented with an initially expanded semantic `button`
+* Archived projects accessibility: `aria-expanded` and `aria-controls` are connected to the archived project card panel
+* Archived section search behavior: matching archived event projects are re-expanded during active search so search results are not hidden by collapsed state
+* Archived read-only accessibility: archived project card link names include `アーカイブ済み・閲覧のみ`
+* Archived continuous projects: not added
+* Project-detail navigation: implemented as semantic links to `/p/:publicToken`
+* New project navigation: preserved through Home CTA links to `/projects/new`
+* Global expense navigation: preserved through the existing mobile bottom navigation route to `/expenses/new`; no desktop development link was added
+* JPY compliance: all displayed money comes from integer yen fixture values and shared `formatYen` / `formatSignedYen`
+* No-login compliance: no account, profile, authenticated current user, login, signup, notification, or user setting behavior was added
+* Verified against mockups: source-level implementation completed; browser-based visual verification not completed
+* Desktop manual verification: not completed in a real browser
+* Smartphone manual verification: not completed in a real browser
+* Keyboard verification for archived collapse button: not completed in a real browser
 
 ---
 
@@ -1474,14 +1536,16 @@ Current test status:
 | ------------------------------ | ------------------------------------------------ |
 | Frontend unit tests            | Not started                                      |
 | Frontend component tests       | Not started                                      |
-| Frontend build                 | Passed with `npm run build`                      |
-| Frontend TypeScript check      | Passed through `tsc -b` inside `npm run build`   |
-| Frontend lint script           | Not present                                      |
-| Route HTTP smoke check         | Passed for all approved routes                   |
+| Frontend build                 | Passed with `npm --prefix frontend run build` after no-projects and no-search-results empty-state implementation |
+| Frontend TypeScript check      | Passed through `tsc -b` inside `npm --prefix frontend run build` after no-projects and no-search-results empty-state implementation |
+| Frontend lint script           | Not present in `frontend/package.json`; IDE diagnostics for `frontend/src` found no linter errors |
+| Route HTTP smoke check         | Passed for `/` and `/p/demo-continuous-project` on the running Vite dev server |
+| Diff whitespace check          | Passed with `git diff --check`                   |
 | Backend unit tests             | Not started                                      |
 | Backend integration tests      | Not started                                      |
 | End-to-end tests               | Not started                                      |
-| Manual responsive verification | Source-level shell structure only; browser check not completed |
+| Manual responsive verification | Not completed in a real browser after archived-section collapse implementation |
+| Home keyboard verification     | Not completed in a real browser after archived-section collapse implementation |
 | Settlement test cases          | Not started                                      |
 
 Do not state that any tests pass until they have been executed.
@@ -1490,7 +1554,7 @@ Do not state that any tests pass until they have been executed.
 
 # 18. Known Deviations
 
-Frontend implementation has started with a foundation-only scope.
+Frontend implementation now includes the foundation and the Home / Project List detailed UI.
 
 Potential mockup-to-requirement differences already documented include:
 
@@ -1500,16 +1564,20 @@ Potential mockup-to-requirement differences already documented include:
 * Smartphone Analytics does not have a dedicated complete mockup.
 * Some generated mockup values or settlement text may overlap or be mathematically inconsistent.
 * JPY is fixed even where a mockup visually resembles a currency selector.
+* Desktop Home search is intentionally placed inside the Home content below the page header instead of the desktop mockup's top header area, prioritizing alignment with project-list content and a wider search input; the smartphone placement remains aligned with the mockup and this is the current adopted approach, not an unresolved defect.
 
 These must be handled according to document priority.
 
-Current known limitations from the frontend foundation:
+Current known limitations from the frontend foundation and Home implementation:
 
-* Placeholder pages are intentionally minimal and do not implement full feature screens.
+* Home / Project List is implemented from centralized dummy data, but it is not connected to an API.
+* Project Creation, Project Detail, Expense Creation, Analytics, and Project Edit pages remain intentionally minimal placeholders.
 * Desktop sidebar and smartphone bottom navigation use text-only temporary navigation markers, not a final icon system.
-* `/p/demo-project` is used only as a route-verification link and is not backed by project data.
-* Browser-based visual inspection for desktop and smartphone has not been completed.
-* No backend, API client, database, fixtures, mock repositories, forms, charts, or business calculations exist yet.
+* `/p/demo-project` is still used by pre-existing mobile navigation items and is not backed by project data.
+* Home project cards use fixture public tokens such as `/p/demo-continuous-project` and navigate to the existing Project Detail placeholder route.
+* Browser-based visual inspection for desktop and smartphone has not been completed after the Home implementation.
+* Browser-based keyboard verification has not been completed after the Home implementation.
+* No backend, API client, database, mock repositories, forms, charts, or business calculations exist yet.
 
 ---
 
@@ -1537,7 +1605,7 @@ Use Git history for detailed file-level history, but keep this document accurate
 
 # 20. Handoff Summary
 
-The repository is currently prepared at the requirements, architecture, mockup-verification, basic Git, and frontend foundation level.
+The repository is currently prepared at the requirements, architecture, mockup-verification, basic Git, frontend foundation, and Home detailed UI level.
 
 Verified completed preparation:
 
@@ -1550,11 +1618,12 @@ Verified completed preparation:
 7. The repository has been initialized with Git.
 8. One React, TypeScript, and Vite frontend exists under `frontend/`.
 9. The responsive AppShell, DesktopSidebar, MobileBottomNavigation, and approved route skeleton exist.
+10. The Home / Project List detailed UI exists under `/` and renders from centralized typed project fixtures.
 
-The first code implementation has created the responsive frontend foundation.
+The frontend foundation exists, and the first detailed static screen, Home / Project List, has been implemented.
 
 Backend, API, and database implementation must wait until their detailed contracts are documented.
 
 The next recommended task is:
 
-> Implement the Home / Project List detailed static UI from inspected mockups, using centralized dummy data rather than hard-coded values in presentation components.
+> Implement the Project Creation detailed static UI from inspected mockups, using shared components and centralized dummy-data boundaries where needed.

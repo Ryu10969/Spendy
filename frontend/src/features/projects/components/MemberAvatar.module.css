@@ -1,0 +1,31 @@
+.avatar {
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border: 2px solid var(--color-surface);
+  border-radius: var(--radius-full);
+  color: var(--color-primary-strong);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+}
+
+.tone1 {
+  background: #eef2ff;
+}
+
+.tone2 {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.tone3 {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.tone4 {
+  background: #fee2e2;
+  color: #be123c;
+}
