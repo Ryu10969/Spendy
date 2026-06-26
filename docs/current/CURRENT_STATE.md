@@ -6,7 +6,7 @@
 | ------------------------------------ | ------------------------------------------------- |
 | Product                              | SplitMate                                         |
 | Document                             | Current State                                     |
-| Status                               | Frontend foundation and Home UI implemented       |
+| Status                               | Frontend foundation, Home UI, and Project Creation UI implemented |
 | Last updated                         | 2026-06-24                                        |
 | Implementation phase                 | Phase 2: Static frontend UI                       |
 | Source of truth for current progress | This document                                     |
@@ -55,8 +55,9 @@ The following work has been completed:
 * A responsive application shell has been added with desktop sidebar and smartphone bottom navigation.
 * The Home / Project List detailed UI has been implemented from centralized typed project fixtures.
 * Home now includes project search, active project cards, archived event project cards, reusable project-list components, and project-detail navigation links.
+* The Project Creation detailed UI has been implemented with controlled form state, required-field validation, project type selection, fixed JPY display, rounding unit selection, member row editing, and an explicit API-unconnected submit result.
 
-Application code has started with the frontend foundation and the first detailed Home screen.
+Application code has started with the frontend foundation, the Home screen, and the Project Creation screen.
 
 The following do not currently exist as verified completed implementations:
 
@@ -552,7 +553,7 @@ frontend/
 Current status:
 
 ```text
-Foundation initialized; Home / Project List implemented
+Foundation initialized; Home / Project List and Project Creation implemented
 ```
 
 Completed frontend foundation work:
@@ -585,6 +586,22 @@ Completed Home implementation work:
 * No-projects empty state
 * No-search-results empty state
 * Desktop and smartphone responsive Home layout
+
+Completed Project Creation implementation work:
+
+* Project Creation placeholder replaced with detailed form UI on `/projects/new`
+* Controlled React form state for project creation
+* Project type card selection for continuous and event projects
+* Required project-name field
+* Optional description field
+* Fixed read-only `JPY (¥)` currency display
+* Settlement rounding unit selection for `1`, `10`, `100`, and `1000` yen
+* Member input rows with stable local row IDs
+* Member row addition and removal controls
+* Client-side validation for required Project Charter fields
+* Accessible form labels, fieldsets, legends, `aria-invalid`, `aria-describedby`, visible error summary, and focus movement to the first invalid field on submit
+* Valid submit displays an explicit API-unconnected success message and does not persist data
+* Desktop and smartphone responsive Project Creation layout using one shared component and CSS Modules
 
 Installed runtime dependencies:
 
@@ -637,7 +654,9 @@ Verification commands run:
 
 * `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" install`
 * `npm --prefix "/Users/masanoryuudai/Documents/SplitMate/frontend" run build`
+* `npm --prefix frontend run build`
 * Temporary Vite dev server route check using Python `urllib.request`
+* Temporary Vite dev server route check for `/projects/new` using Python `urllib.request`
 * `git diff --check`
 
 Verification results:
@@ -649,10 +668,13 @@ Verification results:
 * IDE diagnostics for `frontend/src`: no linter errors found
 * Route HTTP responses: all approved routes returned `200`
 * Diff whitespace check: passed
+* Project Creation build after implementation: passed
+* Project Creation diff whitespace check after implementation: passed
+* Project Creation route smoke check after implementation: `/projects/new` returned `200`
+* IDE diagnostics for changed Project Creation files: no linter errors found
 
 Not yet verified or completed:
 
-* Project creation page
 * Continuous project page
 * Event project page
 * Expense form
@@ -660,8 +682,8 @@ Not yet verified or completed:
 * Centralized fixtures for remaining screens
 * Mock repositories
 * Tests
-* Browser-based visual verification
-* Browser-based keyboard navigation verification
+* Browser-based visual verification for Home and Project Creation
+* Browser-based keyboard navigation verification for Home and Project Creation
 
 ---
 
@@ -1050,12 +1072,13 @@ Phase 2 frontend foundation status:
 * [x] MobileBottomNavigation created
 * [x] Placeholder pages created
 * [x] Detailed Home UI
-* [ ] Detailed Project Creation UI
+* [x] Detailed Project Creation UI
 * [ ] Detailed Continuous Project Detail UI
 * [ ] Detailed Event Project Detail UI
 * [ ] Expense form
 * [ ] Analytics charts
 * [x] Centralized Home project fixture data
+* [x] Project Creation controlled form model and validation constants
 * [ ] Centralized dummy fixture data for remaining screens
 * [ ] Mock repositories
 * [ ] Automated frontend tests
@@ -1202,7 +1225,9 @@ In progress
 Completed:
 
 * Home / Project List detailed static UI
+* Project creation detailed static UI
 * Centralized typed project fixture data for Home
+* Project Creation controlled form model and validation constants
 * Reusable Home project-list components
 * Search filtering interaction for project names
 * Active and archived event project sections
@@ -1211,7 +1236,6 @@ Completed:
 
 Still pending in this static UI phase:
 
-* Project creation detailed static UI
 * Continuous project detail static UI
 * Event project detail static UI
 * Expense creation UI
@@ -1328,7 +1352,7 @@ Progress:
 Status:
 
 ```text
-Not started
+Implemented as a controlled static UI form; API not connected
 ```
 
 References:
@@ -1342,14 +1366,28 @@ docs/ui/mockups/smartphone/04_project_create_2.png
 
 Progress:
 
-* Desktop mockups inspected: not recorded
-* Smartphone mockups inspected: not recorded
-* Static UI: not started
-* Responsive UI: not started
-* Validation: not implemented
-* Dummy data: not connected
+* Desktop mockups inspected: yes, `docs/ui/mockups/pc/02_project_create_1.png` and `docs/ui/mockups/pc/03_project_create_2.png`
+* Smartphone mockups inspected: yes, `docs/ui/mockups/smartphone/03_project_create_1.png` and `docs/ui/mockups/smartphone/04_project_create_2.png`
+* Static UI: implemented
+* Responsive UI: implemented in CSS Modules with desktop horizontal project-type cards and smartphone stacked single-column layout
+* Form state: implemented with React controlled state; React Hook Form and Zod were not introduced because they are not installed in the current frontend
+* Project type behavior: continuous and event options are selectable; continuous is the initial selected value to match the inspected mockups
+* Project name: required text input
+* Description: optional textarea
+* Currency: fixed read-only `JPY (¥)` display; no currency selector was added
+* Settlement rounding unit: selectable `¥1`, `¥10`, `¥100`, and `¥1,000`; `¥10` is the initial selected value to match the inspected mockups
+* Member editing: member rows use stable local row IDs, can be added, removed, and edited; member names are project-local participant names, not account users
+* Validation: implemented for missing project type, empty project name, missing rounding unit, and no entered member
+* Validation accessibility: errors are visible, summarized, associated with controls through `aria-invalid` and `aria-describedby`, and submit focuses the first invalid field
+* Duplicate member names: not rejected because Product Charter does not define duplicate-name behavior for project creation
+* Project-name length and maximum member count: not enforced because exact limits are not defined in Product Charter or Architecture
+* Event-specific fields: not added because Product Charter does not define event date or archive fields for project creation
+* Submit behavior: valid submit displays an explicit API-unconnected success message; it does not create a persistent project, call an API, generate a public token, or write to localStorage
 * API: not connected
-* Verified against mockups: no
+* Backend persistence: not implemented
+* Browser-based visual verification: not completed
+* Browser-based keyboard verification: not completed
+* Verified against mockups: source-level structure implemented from inspected mockups; real-browser visual comparison not completed
 
 ---
 
@@ -1536,16 +1574,17 @@ Current test status:
 | ------------------------------ | ------------------------------------------------ |
 | Frontend unit tests            | Not started                                      |
 | Frontend component tests       | Not started                                      |
-| Frontend build                 | Passed with `npm --prefix frontend run build` after no-projects and no-search-results empty-state implementation |
-| Frontend TypeScript check      | Passed through `tsc -b` inside `npm --prefix frontend run build` after no-projects and no-search-results empty-state implementation |
-| Frontend lint script           | Not present in `frontend/package.json`; IDE diagnostics for `frontend/src` found no linter errors |
+| Frontend build                 | Passed with `npm --prefix frontend run build` after Project Creation implementation |
+| Frontend TypeScript check      | Passed through `tsc -b` inside `npm --prefix frontend run build` after Project Creation implementation |
+| Frontend lint script           | Not present in `frontend/package.json`; IDE diagnostics for changed Project Creation files found no linter errors |
 | Route HTTP smoke check         | Passed for `/` and `/p/demo-continuous-project` on the running Vite dev server |
 | Diff whitespace check          | Passed with `git diff --check`                   |
 | Backend unit tests             | Not started                                      |
 | Backend integration tests      | Not started                                      |
 | End-to-end tests               | Not started                                      |
-| Manual responsive verification | Not completed in a real browser after archived-section collapse implementation |
+| Manual responsive verification | Not completed in a real browser after Project Creation implementation |
 | Home keyboard verification     | Not completed in a real browser after archived-section collapse implementation |
+| Project Creation keyboard verification | Not completed in a real browser after Project Creation implementation |
 | Settlement test cases          | Not started                                      |
 
 Do not state that any tests pass until they have been executed.
@@ -1565,19 +1604,24 @@ Potential mockup-to-requirement differences already documented include:
 * Some generated mockup values or settlement text may overlap or be mathematically inconsistent.
 * JPY is fixed even where a mockup visually resembles a currency selector.
 * Desktop Home search is intentionally placed inside the Home content below the page header instead of the desktop mockup's top header area, prioritizing alignment with project-list content and a wider search input; the smartphone placement remains aligned with the mockup and this is the current adopted approach, not an unresolved defect.
+* Project Creation displays `JPY (¥)` as a fixed read-only field instead of a selector, following Product Charter currency rules.
+* Project Creation does not reject duplicate member names because duplicate-name behavior is not defined by the Product Charter.
+* Project Creation does not include an event date or archive-related creation field because those fields are not defined as project-creation requirements.
 
 These must be handled according to document priority.
 
-Current known limitations from the frontend foundation and Home implementation:
+Current known limitations from the frontend foundation, Home implementation, and Project Creation implementation:
 
 * Home / Project List is implemented from centralized dummy data, but it is not connected to an API.
-* Project Creation, Project Detail, Expense Creation, Analytics, and Project Edit pages remain intentionally minimal placeholders.
+* Project Creation is implemented as a controlled static UI form, but it is not connected to an API and does not persist project data.
+* Project Creation valid submit only displays an API-unconnected success message; it does not generate a backend public token or navigate to a created project.
+* Project Detail, Expense Creation, Analytics, and Project Edit pages remain intentionally minimal placeholders.
 * Desktop sidebar and smartphone bottom navigation use text-only temporary navigation markers, not a final icon system.
 * `/p/demo-project` is still used by pre-existing mobile navigation items and is not backed by project data.
 * Home project cards use fixture public tokens such as `/p/demo-continuous-project` and navigate to the existing Project Detail placeholder route.
-* Browser-based visual inspection for desktop and smartphone has not been completed after the Home implementation.
-* Browser-based keyboard verification has not been completed after the Home implementation.
-* No backend, API client, database, mock repositories, forms, charts, or business calculations exist yet.
+* Browser-based visual inspection for desktop and smartphone has not been completed after the Project Creation implementation.
+* Browser-based keyboard verification has not been completed after the Project Creation implementation.
+* No backend, API client, database, mock repositories, charts, or business calculations exist yet.
 
 ---
 
@@ -1605,7 +1649,7 @@ Use Git history for detailed file-level history, but keep this document accurate
 
 # 20. Handoff Summary
 
-The repository is currently prepared at the requirements, architecture, mockup-verification, basic Git, frontend foundation, and Home detailed UI level.
+The repository is currently prepared at the requirements, architecture, mockup-verification, basic Git, frontend foundation, Home detailed UI, and Project Creation detailed UI level.
 
 Verified completed preparation:
 
@@ -1619,11 +1663,12 @@ Verified completed preparation:
 8. One React, TypeScript, and Vite frontend exists under `frontend/`.
 9. The responsive AppShell, DesktopSidebar, MobileBottomNavigation, and approved route skeleton exist.
 10. The Home / Project List detailed UI exists under `/` and renders from centralized typed project fixtures.
+11. The Project Creation detailed UI exists under `/projects/new` with controlled form state and client-side validation.
 
-The frontend foundation exists, and the first detailed static screen, Home / Project List, has been implemented.
+The frontend foundation exists, and the first two detailed static screens, Home / Project List and Project Creation, have been implemented.
 
 Backend, API, and database implementation must wait until their detailed contracts are documented.
 
 The next recommended task is:
 
-> Implement the Project Creation detailed static UI from inspected mockups, using shared components and centralized dummy-data boundaries where needed.
+> Implement the Continuous Project Detail static UI from inspected mockups, using shared components and centralized dummy-data boundaries where needed.
