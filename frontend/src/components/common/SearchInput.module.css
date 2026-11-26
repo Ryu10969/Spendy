@@ -13,20 +13,22 @@
 
 .control {
   display: flex;
-  min-height: 3.75rem;
+  min-height: 3rem;
   align-items: center;
   gap: var(--space-3);
-  border: var(--border-default);
-  border-radius: var(--radius-xl);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  background: var(--color-background-input);
 }
 
 .icon {
   padding-left: var(--space-4);
   color: var(--color-text-muted);
-  font-size: var(--font-size-xl);
-  line-height: 1;
+}
+
+.icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .input {
@@ -36,7 +38,12 @@
   background: transparent;
   color: var(--color-text-primary);
   font-size: var(--font-size-md);
-  outline: 0;
+}
+
+.input:focus-visible {
+  border-radius: var(--radius-sm);
+  outline: 3px solid var(--color-border-focus);
+  outline-offset: 3px;
 }
 
 .input::placeholder {
@@ -57,11 +64,4 @@
 
 .clearButton:hover {
   color: var(--color-text-primary);
-}
-
-@media (min-width: 768px) {
-  .control {
-    min-height: 3rem;
-    border-radius: var(--radius-lg);
-  }
 }

@@ -1,0 +1,69 @@
+/* Shared Analytics interaction and visibility; preserve typography and tokens. */
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-rank-row[role="button"] {
+  position: relative;
+  cursor: pointer;
+  padding: 12px 10px;
+  margin: 6px 0;
+  border-bottom: 0;
+  border-radius: 12px;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-category-selection {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--green);
+  border-radius: 12px;
+  pointer-events: none;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-rank-row[role="button"]:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-hit {
+  cursor: pointer;
+}
+
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-rank-row :is(.f-track, .swatch) {
+  opacity: var(--linked-category-opacity,1);
+}
+/* The existing center overlays the whole ring; it must not intercept arc input. */
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-donut-center {
+  pointer-events: none;
+}
+
+/* Native SVG outline uses a rectangular extent. Draw keyboard focus along the
+   arc instead, behind its color stroke, and keep its hit region stationary. */
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-hit:focus {
+  outline: none;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-focus {
+  opacity: 0;
+  pointer-events: none;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-arc:has(> .linked-donut-hit:focus-visible) .linked-donut-focus {
+  opacity: 1;
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-visual circle {
+  stroke-width: var(--linked-arc-width,20);
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .linked-donut-exact {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-rank-row[role="button"]:hover {
+  background: var(--surface);
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) [data-linked-categories] .f-rank-row[role="button"][aria-pressed="true"] {
+  background: var(--tint);
+}
+:where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) .f-rank-row .f-rank-name .swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  flex: 0 0 28px;
+  margin: 0;
+}

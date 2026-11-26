@@ -1,0 +1,327 @@
+/* Future preview only. Keep Current, production and global token defaults intact. */
+:where([data-analytics-v4]) .main:has([data-future-analytics]) {
+  --type-page-title: 2.125rem;
+  --type-section-title: 1.5rem;
+  --type-kpi-value: 2.125rem;
+  --type-comparison-value: 1.875rem;
+  --type-donut-value: 1.5625rem;
+  --type-line-page-title: 1.3;
+  font-size: var(--type-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-line-body);
+  overflow-wrap: anywhere;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) h1 {
+  font-size: var(--type-page-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-line-page-title);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-card .card-title, .pro-heading) {
+  font-size: var(--type-section-title);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-line-heading);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.section-label, .pro-preview h3, .state-card h2) {
+  font-size: var(--type-card-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-card-title);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.head-description, .f-card .card-subtitle, .future-context, .pro-preview p, .member-project-summary, .empty-state, .empty-state strong, .state-card p, .state-preview p) {
+  font-size: var(--type-body);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-line-body);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-kpi-label, .f-rank-head, .f-table th, .field-title, .month-field, .popover legend, .state-preview label, #filterError, .outline-button, .segmented button, .chart-data summary, .service-state) {
+  font-size: var(--type-form-label);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-label);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpi-value {
+  font-size: var(--type-kpi-value);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-line-numeric);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.comparison-kpi .f-kpi-value, .delta-summary) {
+  font-size: var(--type-comparison-value);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--type-line-numeric);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .comparison-kpi .f-kpi-value span {
+  display: inline-block;
+  white-space: nowrap;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-unit, .f-rank-name, .project-option, .future-tabs button, .member-controls button, .f-table td:first-child, .date-panel .service, .delta-row > span) {
+  font-size: var(--type-list-item);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--type-line-label);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-amount, .f-table td.table-amount, .delta-row strong, .delta-check b, .date-panel strong) {
+  font-size: var(--type-table-amount);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-table);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-pct, .f-table td.table-percentage) {
+  font-size: var(--type-table-percentage);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-table);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-table, .date-panel .date, .delta-check, .f-line-legend) {
+  font-size: var(--type-body);
+  line-height: var(--type-line-label);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-donut-center strong {
+  font-size: var(--type-donut-value);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-amount);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-chart svg text {
+  font-size: var(--type-chart-axis);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-line-chart);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-chart svg .number-label {
+  font-size: var(--type-chart-value);
+  font-weight: var(--font-weight-semibold);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.selected-names, .month-field input, .state-preview select) {
+  font-size: var(--type-form-input);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-line-label);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .pro-preview button {
+  font-size: var(--type-form-label);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--type-line-label);
+  white-space: normal;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-kpi-note, .f-card-foot, .future-foot, .filter-hint, .filter-bottom, .field-title span:last-child, .popover-bottom, .project-option small, .count, .scope-tag, .demo-badge, .chart-unit, .f-donut-center, .f-table small, .date-panel small, .delta-summary small, .pro-heading span:last-child, .pro-tag, .concept-inline, .console-title, .console-group, .console-status, .state-preview) {
+  font-size: var(--type-caption);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-line-label);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-kpi-value, .f-rank-amount, .f-rank-pct, .f-table, .f-donut-center strong, .delta-summary, .delta-row strong, .delta-check b, .date-panel, .month-field input) {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Grow with the text; keep amounts and labels available at narrow widths. */
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.page-head, .filters-top, .filter-bottom, .results-meta, .pro-heading, .pro-preview, .delta-check) {
+  flex-wrap: wrap;
+  gap: 12px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.page-head > div, .card-head > div, .pro-preview > div, .project-option > span, .f-rank-name > span:last-child, .service-name > span:last-child) {
+  min-width: 0;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpi {
+  min-height: 190px;
+  padding: 20px 18px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpi:first-child {
+  padding-top: 19px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpis {
+  align-items: stretch;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-card .card-title {
+  margin-bottom: 8px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-card-foot {
+  display: block;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-rank-head,
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-rank-row {
+  grid-template-columns: minmax(140px,1fr) minmax(80px,2fr) minmax(140px,max-content) 65px;
+  gap: 16px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-donut-layout {
+  grid-template-columns: minmax(250px,280px) minmax(0,1fr);
+  gap: 24px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-donut {
+  width: min(280px,100%);
+  height: auto;
+  aspect-ratio: 1;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-donut-legend .f-rank-row {
+  grid-template-columns: minmax(100px,1fr) minmax(140px,max-content) 65px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .delta-row {
+  grid-template-columns: minmax(100px,1fr) minmax(80px,2fr) minmax(150px,max-content);
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .delta-summary small {
+  display: block;
+  margin: 8px 0 0;
+  letter-spacing: normal;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .date-panel .date {
+  width: auto;
+  white-space: nowrap;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .date-panel strong {
+  white-space: nowrap;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-table {
+  min-width: 640px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-table td, .f-table th) {
+  padding: 16px 14px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-table td:first-child {
+  min-width: 150px;
+  max-width: 260px;
+  white-space: normal;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-table:has(.service-name) td:first-child {
+  min-width: 220px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .f-rank-name {
+  white-space: normal;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .future-tabs {
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.outline-button, .segmented button, .member-controls button, .pro-preview button) {
+  min-height: 44px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .segmented {
+  flex-wrap: wrap;
+  max-width: 100%;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .filters .field-title {
+  min-height: 21px;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .filters .project-picker {
+  margin-top: 27px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .filter-row :is(.project-select, .month-field input, .months .outline-button) {
+  height: auto;
+  min-height: 44px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .project-select {
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .selected-names {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .popover {
+  max-height: min(60vh,480px);
+  overflow-y: auto;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .project-option small {
+  flex: none;
+}
+@media (max-width: 1250px) {
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpis,
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpis:has(>.f-kpi:nth-child(3):last-child) {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .filter-row {
+    grid-template-columns: minmax(0,1fr);
+    gap: 18px;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .filters .project-picker {
+    margin-top: 0;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .f-donut-layout {
+    grid-template-columns: minmax(0,1fr);
+  }
+}
+/* Four ranking columns need at least 473px; the card has 495px at 769px viewport. */
+@media (max-width: 768px) {
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-head, .f-rank-row, .f-donut-legend .f-rank-row, .delta-row) {
+    grid-template-columns: minmax(0,1fr) max-content;
+    gap: 8px 12px;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-name, .f-rank-head > :first-child, .delta-row > span) {
+    grid-column: 1 / -1;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-amount, .f-rank-head > :nth-child(3)) {
+    grid-column: 1;
+    grid-row: 2;
+    text-align: left;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-rank-pct, .f-rank-head > :last-child) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) :is(.f-track, .f-rank-head > :nth-child(2), .delta-track) {
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 3;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .delta-row strong {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    text-align: left;
+  }
+}
+@media (max-width: 650px) {
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpis,
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .f-kpis:has(>.f-kpi:nth-child(3):last-child) {
+    grid-template-columns: minmax(0,1fr);
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .filters {
+    padding: 18px 14px;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .months {
+    display: grid;
+    grid-template-columns: minmax(0,1fr);
+    width: 100%;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .months .date-arrow {
+    justify-content: center;
+    height: auto;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .date-panel .date {
+    flex-basis: 100%;
+  }
+}
+
+/* Pro combined category card: Current composition with existing Future type roles. */
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .current-category-layout {
+  grid-template-columns: clamp(300px,27vw,320px) minmax(0,1fr);
+  gap: 18px;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .current-category-layout .f-donut {
+  width: clamp(250px,24vw,280px);
+}
+@media (min-width: 769px) {
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .current-category-layout :is(.f-rank-head, .f-rank-row) {
+    grid-template-columns: minmax(100px,1fr) minmax(80px,1.25fr) minmax(140px,max-content) 65px;
+    gap: 10px;
+  }
+}
+@media (max-width: 1100px) {
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .current-category-layout {
+    grid-template-columns: minmax(0,1fr);
+    gap: 20px;
+  }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .current-category-layout .f-donut {
+    justify-self: center;
+    width: min(250px,100%);
+  }
+}
+
+/* Preserve the existing 2px border footprint; only its visible marker moves. */
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .future-tabs button {
+  position: relative;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .future-tabs button[aria-selected=true] {
+  border-bottom-color: transparent;
+}
+:where([data-analytics-v4]) .main:has([data-future-analytics]) .future-tab-indicator {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--green);
+  pointer-events: none;
+}

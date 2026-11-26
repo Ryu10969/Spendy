@@ -16,7 +16,10 @@ export function SearchInput({ id, label, value, placeholder, onChange }: SearchI
       </label>
       <div className={styles.control}>
         <span className={styles.icon} aria-hidden="true">
-          ⌕
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="10.5" cy="10.5" r="6.5" />
+            <path d="m15.5 15.5 5 5" />
+          </svg>
         </span>
         <input
           id={id}

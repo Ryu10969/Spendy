@@ -1,0 +1,167 @@
+/* Display-contents wrappers preserve the desktop card's existing layout. */
+:where([data-analytics-v4]) :is(.current-analytics-content, .analytics-card-body, .analytics-card-extra, .analytics-filter-body, .analytics-filter-apply) { display: contents; }
+:where([data-analytics-v4]) :is(.analytics-card-body, .analytics-card-extra, .analytics-filter-body, .analytics-filter-summary, .card-subtitle)[hidden] { display: none; }
+
+:where([data-analytics-v4]) .months .month-field {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+:where([data-analytics-v4]) .month-field legend { padding: 0; margin-bottom: 6px; }
+:where([data-analytics-v4]) .month-field-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+}
+:where([data-analytics-v4]) .months .month-field :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px;
+  border: 1px solid var(--color-border-control);
+  border-radius: 7px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 1rem;
+}
+:where([data-analytics-v4]) .month-field-controls :is(input, select):focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+@media (max-width: 1199.98px) {
+  :where([data-analytics-v4]) .analytics-filter-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) {
+    min-width: 0;
+    padding-inline: clamp(10px, 2vw, 24px);
+    overflow-wrap: anywhere;
+  }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) :is(.filters, .f-card, .f-kpi, .filter-row > div, .card-head > div, .f-donut-legend, .f-chart) { min-width: 0; max-width: 100%; }
+  :where([data-analytics-v4]) .analytics-disclosure {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+  }
+  :where([data-analytics-v4]) .analytics-disclosure > span:last-child { margin-left: auto; flex: none; }
+  :where([data-analytics-v4]) .main .f-card .card-head > div:first-child,
+  :where([data-analytics-v4]) .main .filters .section-label { width: 100%; }
+  :where([data-analytics-v4]) .main .f-card[data-analysis-expanded=false] .card-head { margin-bottom: 0; }
+  :where([data-analytics-v4]) .main .f-card[data-analysis-expanded=false] .card-title { margin-bottom: 0; }
+  :where([data-analytics-v4]) .analytics-filter-summary { margin: 0; line-height: 1.7; color: var(--muted); }
+  :where([data-analytics-v4]) .main .filters .filters-top { margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+  :where([data-analytics-v4]) .main .filters .section-label { font-size: 1.125rem; font-weight: 650; }
+  :where([data-analytics-v4]) .main .filters .analytics-disclosure { border: 0; background: transparent; }
+  :where([data-analytics-v4]) .analytics-filter-pending { display: block; color: var(--muted); font-size: .875rem; }
+  :where([data-analytics-v4]) .analytics-filter-error { display: block; color: var(--red); }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) :is(.filters-top, .filter-bottom, .results-meta, .pro-heading, .pro-preview, .delta-check, .page-head) { flex-wrap: wrap; gap: 8px 12px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .filter-row { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .filters .project-picker { margin-top: 0; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .popover { max-height: min(60vh, 480px); overflow-y: auto; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .project-option > span { min-width: 0; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .months { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: 12px; align-items: end; width: 100%; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .month-field { min-width: 0; max-width: 100%; }
+  :where([data-analytics-v4]) .main .months .analytics-filter-apply { display: flex; grid-column: 1 / -1; justify-content: flex-end; padding-top: 4px; }
+  :where([data-analytics-v4]) .main .filters .months .outline-button { min-width: 6rem; background: var(--green); color: var(--card); font-weight: 650; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .months .date-arrow { display: none; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpis,
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpis:has(> .f-kpi:nth-child(3):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpis > .f-kpi { grid-column: auto; min-height: 0; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpi .f-kpi-value,
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpi .f-kpi-value span { white-space: normal; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .future-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    max-width: 100%;
+    gap: 12px;
+    padding: 4px 4px 8px;
+    scroll-padding-inline: 4px;
+  }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .future-tabs button { flex: 0 0 auto; min-height: 44px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .current-category-layout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .current-category-layout .f-donut { width: min(250px, 100%); height: auto; aspect-ratio: 1; justify-self: center; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card :is(.f-rank-row, .delta-row) { grid-template-columns: minmax(0, 1fr) minmax(0, max-content); gap: 8px 12px; }
+  /* Match the Current desktop ranking specificity; category/Future rules stay separate. */
+  :where([data-analytics-v4]) .main:has([data-current-analytics]) .f-card:not(:has(.current-category-layout)) .f-rank-row { grid-template-columns: minmax(0, 1fr) minmax(0, max-content); gap: 8px 12px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .f-rank-name { grid-column: 1 / -1; grid-row: 1; white-space: normal; overflow: visible; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .f-rank-amount { grid-column: 1; grid-row: 2; text-align: left; white-space: normal; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .f-rank-pct { grid-column: 2; grid-row: 2; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .f-rank-row > .f-track { display: block; grid-column: 1 / -1; grid-row: 3; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .delta-row > span { grid-column: 1 / -1; grid-row: 1; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .delta-row strong { grid-column: 1 / -1; grid-row: 2; text-align: left; white-space: normal; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .delta-track { grid-column: 1 / -1; grid-row: 3; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) :is(.member-controls, .segmented, .date-panel) { flex-wrap: wrap; max-width: 100%; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) :is(.member-controls button, .segmented button, .pro-preview button, .outline-button) { min-height: 44px; white-space: normal; overflow-wrap: anywhere; }
+  /* Overview uses measured SVG coordinates, with no fixed minimum width. */
+  :where([data-analytics-v4]) .main .chart-scroll[data-chart-mode=overview] svg { width: 100%; min-width: 0; max-width: 100%; }
+  :where([data-analytics-v4]) .main .chart-mode { margin-block: 12px; }
+  :where([data-analytics-v4]) .main .chart-month-selection { margin-top: 16px; display: grid; gap: 12px; }
+  :where([data-analytics-v4]) .main .chart-month-controls { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: end; gap: 8px; }
+  :where([data-analytics-v4]) .main .chart-month-current { min-width: 0; display: grid; gap: 6px; font-weight: 600; }
+  :where([data-analytics-v4]) .main .chart-month-controls button { min-width: 44px; min-height: 44px; padding: 4px; border: 1px solid var(--border); border-radius: 6px; background: var(--control); color: var(--text); font-size: 1.5rem; }
+  :where([data-analytics-v4]) .main .chart-month-controls button:disabled { opacity: .45; cursor: default; }
+  :where([data-analytics-v4]) .main .chart-month-controls .chart-month-trigger { min-width: 0; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 4px; padding: 8px; font: inherit; text-align: left; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main .chart-month-picker { display: grid; gap: 12px; min-width: 0; }
+  :where([data-analytics-v4]) .main .chart-month-panel { position: static; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 6px; min-width: 0; max-width: 100%; max-height: min(18rem, 45vh); overflow-y: auto; overscroll-behavior-y: contain; border: 1px solid var(--border); border-radius: 8px; background: var(--card); }
+  :where([data-analytics-v4]) .main .chart-month-panel[hidden] { display: none; }
+  :where([data-analytics-v4]) .main .chart-month-panel button { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; min-height: 44px; padding: 10px 8px; border: 1px solid var(--border); border-radius: 6px; background: var(--control); color: var(--text); text-align: left; overflow-wrap: anywhere; font: inherit; }
+  :where([data-analytics-v4]) .main .chart-month-panel button[aria-pressed=true] { background: var(--green); color: var(--card); border-color: var(--green); font-weight: 650; }
+  :where([data-analytics-v4]) .main .chart-month-details { padding: 12px; border-radius: 8px; background: var(--surface); line-height: 1.7; }
+  :where([data-analytics-v4]) .main .chart-month-details > div { display: grid; margin-top: 8px; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main .chart-month-details b { font-variant-numeric: tabular-nums; }
+  :where([data-analytics-v4]) .main .chart-month-list { list-style: none; padding: 0; margin: 0; }
+  :where([data-analytics-v4]) .main .chart-month-list li { padding-block: 12px; border-bottom: 1px solid var(--rule); }
+  :where([data-analytics-v4]) .main .chart-month-list h3 { margin: 0 0 8px; font-size: 1rem; }
+  :where([data-analytics-v4]) .main .chart-month-list dl { margin: 0; }
+  :where([data-analytics-v4]) .main .chart-month-list dl > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 12px; margin-top: 6px; }
+  :where([data-analytics-v4]) .main .chart-month-list :is(dt, dd) { min-width: 0; max-width: 100%; overflow-wrap: anywhere; }
+  :where([data-analytics-v4]) .main .chart-month-list dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
+}
+
+@media (max-width: 767px) {
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .months { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: stretch; }
+}
+
+@media (max-width: 430px) {
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .months { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 359px) {
+  :where([data-analytics-v4]) .main .chart-month-panel { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 767px) {
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpis > .f-kpi:first-child { grid-column: 1 / -1; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpis > .f-kpi:nth-child(n+4) { grid-column: 1 / -1; }
+  /* Living keeps its desktop DOM order; move the existing comparison into row two. */
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .living-kpis > .f-kpi:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
+  :where([data-analytics-v4]) .main:has([data-future-analytics]) .living-kpis > .f-kpi:nth-child(4) { grid-column: 2; grid-row: 2; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) :is(.filters, .f-card, .f-kpi) { padding: 14px 10px; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpi .f-kpi-value { font-size: 1.375rem; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-kpi:first-child .f-kpi-value { font-size: 2rem; }
+  :where([data-analytics-v4]) .main:has(:is([data-current-analytics], [data-future-analytics])) .f-card .f-donut-center strong { font-size: 1.125rem; overflow-wrap: anywhere; max-width: 78%; }
+}
+
+@media (min-width: 1200px) {
+  :where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) .current-analytics-content [data-linked-categories] .current-category-layout {
+    grid-template-columns: minmax(0, min(34%, 280px)) minmax(0, 1fr);
+  }
+  :where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) .current-analytics-content [data-linked-categories] .current-category-layout .f-donut {
+    width: 100%;
+  }
+  :where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) .current-analytics-content [data-linked-categories] .current-category-layout .f-rank-row {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, max-content) minmax(0, max-content);
+  }
+  :where([data-analytics-v4]) .main:has(:is([data-future-analytics],[data-current-analytics])) .current-analytics-content [data-linked-categories] .current-category-layout :is(.f-rank-name, .f-rank-amount) {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

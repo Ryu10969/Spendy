@@ -4,6 +4,7 @@ import { AnalyticsPage } from "../pages/AnalyticsPage/AnalyticsPage";
 import { GlobalExpenseCreatePage } from "../pages/ExpenseCreatePage/GlobalExpenseCreatePage";
 import { ProjectExpenseCreatePage } from "../pages/ExpenseCreatePage/ProjectExpenseCreatePage";
 import { HomePage } from "../pages/HomePage/HomePage";
+import { ArchivesPage } from "../pages/ArchivesPage/ArchivesPage";
 import { ProjectCreatePage } from "../pages/ProjectCreatePage/ProjectCreatePage";
 import { ProjectDetailPage } from "../pages/ProjectDetailPage/ProjectDetailPage";
 import { ProjectEditPage } from "../pages/ProjectEditPage/ProjectEditPage";
@@ -12,10 +13,9 @@ export const router = createBrowserRouter([
   {
     element: <AppShell />,
     children: [
-      {
-        path: "/",
-        element: <HomePage />,
-      },
+      { path: "/", element: <HomePage /> },
+      { path: "/archives", element: <ArchivesPage /> },
+      { path: "/analytics", element: <AnalyticsPage /> },
       {
         path: "/projects/new",
         element: <ProjectCreatePage />,
@@ -31,10 +31,6 @@ export const router = createBrowserRouter([
       {
         path: "/expenses/new",
         element: <GlobalExpenseCreatePage />,
-      },
-      {
-        path: "/analytics",
-        element: <AnalyticsPage />,
       },
       {
         path: "/p/:publicToken/edit",

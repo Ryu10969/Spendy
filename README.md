@@ -1,660 +1,78 @@
-# SplitMate
+# Spendy
 
-SplitMate is a responsive shared-expense management web application for couples, roommates, families, travel groups, and friend groups.
+<img src="frontend/src/assets/brand/spendy-logo.png" alt="Spendy" width="420" />
 
-It supports both long-term shared living expenses and one-time event expenses.
+Spendy は、同居や旅行で立て替えた支出を記録し、誰が誰にいくら返せばよいかを計算する日本円の共有支出管理アプリです。家計のような継続支出は月ごとに、旅行やイベントの支出はプロジェクト全体で精算できます。
 
-The product combines:
+共同の支出では、支払った人と負担する人が一致するとは限りません。Spendy では支出ごとに負担者と配分を記録し、後から支出を編集しても、精算額の根拠を追えるようにしました。
 
-* Shared expense registration
-* Bill splitting
-* Settlement calculation
-* Expense history
-* Monthly expense management
-* Spending analytics
-* Multiple project management
+## 画面
 
----
+ローカルの PostgreSQL に保存した架空の支出を集計した画面です。継続プロジェクト 2 件を選び、2 か月分の支出を比較しています。
 
-## Current Status
+| PC | スマートフォン |
+| --- | --- |
+| <img src="docs/portfolio/analytics-desktop.png" alt="Spendy のPC版支出分析" width="620" /> | <img src="docs/portfolio/analytics-mobile.png" alt="Spendy のスマートフォン版支出分析" width="260" /> |
 
-SplitMate is currently in the early static frontend UI implementation phase.
+## 実装した機能
 
-The React, TypeScript, and Vite frontend foundation has been initialized, and the Home / Project List screen has a detailed dummy-data UI.
+- 継続・イベントのプロジェクト作成、検索、ページング、論理削除
+- プロジェクト内のメンバー追加・改名、支払者と負担者を指定した支出登録・編集・削除
+- イベント全体と継続プロジェクト月次の精算。送金回数を抑える方式と、メンバーの順番に沿って確認しやすい方式を比較
+- イベントのアーカイブと、アーカイブ時点の精算結果の参照
+- 継続プロジェクトの月次分析。ローカル版と提出デモ版では、ホーム月次集計と複数プロジェクトの分析を実データベースに接続
 
-Completed documents:
+## 技術スタック
 
-* `PRODUCT_CHARTER.md`
-* `docs/ui/MOCKUP_INDEX.md`
-* `docs/architecture/ARCHITECTURE.md`
-* `docs/adr/0001-initial-architecture.md`
-* `docs/current/CURRENT_STATE.md`
-* `.cursor/rules/splitmate-core.mdc`
+| 領域 | 技術と採用理由 |
+| --- | --- |
+| バックエンド | Java 21、Spring Boot 4、Spring MVC、Spring Data JPA、Gradle。検証・計算・永続化を分け、サービス層でトランザクションを管理 |
+| データベース | PostgreSQL、Flyway。外部キー・一意制約・行ロックで整合性を維持し、マイグレーション履歴を管理 |
+| フロントエンド | React、TypeScript、Vite、TanStack Query、CSS Modules。API の読み込みと更新後の再取得を管理し、PC とモバイルで画面構造を共有 |
+| 起動・配信 | ローカルは Docker Compose で PostgreSQL を起動。提出用 Docker イメージは React の静的成果物と Spring の API を同一オリジンで配信 |
 
-Prepared UI assets:
+## バックエンド設計
 
-* Desktop mockups
-* Smartphone mockups
-* Continuous-project screens
-* Event-project screens
-* Expense-registration screens
-* Analytics screens
+- **整数円と配分履歴**　支出額、負担額、残高は Java の `long` と PostgreSQL の `BIGINT` で扱います。均等割りの余りはメンバー表示順で 1 円ずつ配り、配分金額を支出と一緒に保存します。
+- **精算の再現性**　受取側と送金側を残高で照合し、方式ごとの精算結果を保存します。対象期間の支出・配分が同じなら既存結果を再利用し、支出変更時は関連する結果を失効させます。
+- **同時更新**　支出編集は楽観ロックで古い編集を検知し、競合時に HTTP 409 を返します。支出更新と精算生成は同じプロジェクト行を最初に悲観ロックし、配分の置換・精算結果の失効・採番をそれぞれのトランザクションで確定します。
+- **REST API とアクセス境界**　Project を起点に Member・Expense・Settlement を扱い、入力 DTO とレスポンス DTO を永続化モデルから分離します。ローカル集計は明示的に有効にしたループバック環境で動作し、提出デモは専用プロファイルと架空データの専用 DB を使用します。
 
-Not yet implemented:
+システム構成図、ER 図、API の一覧、アクセス制御と ADR の要点を技術設計にまとめています。 [技術設計](docs/portfolio/design.md)
 
-* Spring Boot backend
-* PostgreSQL schema
-* Flyway migrations
-* REST API
-* Automated tests
-* Deployment configuration
+## 検証と開発の進め方
 
-The remaining detailed frontend screens are still in progress.
+通常版・提出デモ版のフロントエンドビルドと、PC幅・スマートフォン幅でのホームとアーカイブの画像表示を検証しました。バックエンドは、PostgreSQL 17 で全408件と実HTTPの集計照合を通過した開発用コミット `27c618e63e816f97246c8d0094fe34ee4f954502` と同一です。画面に使用した値は架空データです。
 
-For the verified current progress, see:
+単体テストで整数円の配分と精算結果、API テストで入力やエラーの契約、PostgreSQL 統合テストで制約・マイグレーション・同時更新の結果を確認できるようにしています。過去の提出デモ検証では、使い捨て PostgreSQL と Chrome を使用し、支出の金額と Home・Analytics の集計を独立した SQL と照合しました。匿名セッションの隔離 PoC は製品のアクセス制御とは別の検証です。
 
-```text
-docs/current/CURRENT_STATE.md
-```
+コード品質は SRCS 1.0.0 の要件 ID と差分・検証結果を対応づけ、設計判断は ADR に記録します。AI は調査、実装案、テスト案、レビューの補助に使用します。実装の根拠は仕様と実コードに置き、テストを実行してから結果を記録します。
 
----
+## ローカルで起動
 
-## Product Concept
-
-SplitMate manages shared expenses through projects.
-
-Each project represents one shared-expense context.
-
-Examples:
-
-* Shared household expenses
-* Roommate living costs
-* Family expenses
-* Domestic travel
-* Overseas travel
-* Group events
-
-Each project contains:
-
-* Project information
-* Members
-* Expenses
-* Settlement results
-* Settlement completion status
-* Expense history
-* Analytics where applicable
-
----
-
-## Project Types
-
-SplitMate supports two project types.
-
-### Continuous Project
-
-Continuous projects are intended for shared expenses without a predetermined end.
-
-Examples:
-
-* Couples living together
-* Roommates
-* Families
-* Shared houses
-
-Main behavior:
-
-* Monthly expense management
-* Historical month navigation
-* Monthly settlement calculation
-* Category analytics
-* Member payment comparison
-* Long-term expense trends
-
----
-
-### Event Project
-
-Event projects are intended for one-time shared expenses.
-
-Examples:
-
-* Travel
-* Drinking parties
-* Camping
-* Group outings
-
-Main behavior:
-
-* One settlement scope per project
-* Simple expense registration
-* Final settlement calculation
-* Settlement completion
-* Project archive
-* Read-only access after archive
-
-Event-project detail screens do not display analytics charts in the MVP.
-
----
-
-## MVP Features
-
-The planned MVP includes:
-
-* No-login project access
-* Active project list
-* Archived event project list
-* Project search
-* Project creation
-* Project editing
-* Member management
-* Expense registration
-* Expense history
-* Keyword, category, and period filtering
-* Settlement calculation
-* Settlement completion tracking
-* Monthly filtering for continuous projects
-* Continuous-project analytics
-* Dedicated analytics screen
-* Event-project completion and archive
-* Responsive desktop and smartphone UI
-* Server-side persistence
-
----
-
-## Out of Scope for MVP
-
-The following are not included in the current MVP:
-
-* Login
-* Signup
-* OAuth
-* JWT authentication
-* Email invitation
-* Role-based access control
-* Multi-currency calculation
-* Exchange-rate conversion
-* Receipt image upload
-* Receipt OCR
-* AI categorization
-* AI spending analysis
-* Budget management
-* Bank integration
-* Credit-card integration
-* Actual payment transfer
-* Native iOS application
-* Native Android application
-* Push notifications
-* External bill-splitting service import
-* External-service scraping
-* Subscription billing
-* Administration console
-* Dark mode
-
-These features must not be implemented unless the Product Charter is explicitly updated.
-
----
-
-## Planned Technology Stack
-
-### Frontend
-
-* React
-* TypeScript
-* Vite
-* React Router
-* TanStack Query
-* React Hook Form
-* Zod
-* Recharts
-* CSS Modules
-
-### Backend
-
-* Java 21
-* Spring Boot
-* Spring Web
-* Spring Data JPA
-* Bean Validation
-
-### Database
-
-* PostgreSQL
-* Flyway
-
-### Testing
-
-* JUnit
-* Mockito
-* Spring Boot Test
-* Frontend component tests
-* End-to-end tests for critical flows
-
-### Local Development
-
-* Docker
-* Docker Compose
-
-The frontend foundation dependency versions are managed in `frontend/package.json`.
-Backend and database dependency versions are not yet fixed in this README.
-
----
-
-## High-Level Architecture
-
-The approved architecture is:
-
-```text
-Browser
-  ↓ HTTPS / JSON
-React + TypeScript frontend
-  ↓ REST API
-Spring Boot backend
-  ↓ JPA / SQL
-PostgreSQL
-```
-
-The initial frontend will use centralized dummy-data adapters.
-
-The same UI will later connect to the Spring Boot REST API without requiring a full component rewrite.
-
-For technical details, see:
-
-```text
-docs/architecture/ARCHITECTURE.md
-```
-
----
-
-## Repository Structure
-
-Planned repository structure:
-
-```text
-splitmate/
-├── PRODUCT_CHARTER.md
-├── README.md
-├── docker-compose.yml
-├── .env.example
-├── .gitignore
-│
-├── frontend/
-│   └── Application source code
-│
-├── backend/
-│   └── Application source code
-│
-├── docs/
-│   ├── architecture/
-│   │   └── ARCHITECTURE.md
-│   ├── ui/
-│   │   ├── MOCKUP_INDEX.md
-│   │   └── mockups/
-│   │       ├── pc/
-│   │       └── smartphone/
-│   ├── api/
-│   │   └── API_SPEC.md
-│   ├── database/
-│   │   └── DATABASE_DESIGN.md
-│   ├── adr/
-│   │   └── 0001-initial-architecture.md
-│   └── current/
-│       └── CURRENT_STATE.md
-│
-└── .cursor/
-    └── rules/
-        └── splitmate-core.mdc
-```
-
-Some planned files and application directories do not exist yet.
-
-See `docs/current/CURRENT_STATE.md` for the verified current repository state.
-
----
-
-## Documentation
-
-### Product Requirements
-
-```text
-PRODUCT_CHARTER.md
-```
-
-Defines:
-
-* Product purpose
-* MVP scope
-* Business rules
-* Continuous and event project behavior
-* Expense and settlement requirements
-* Analytics requirements
-* Explicit exclusions
-* Acceptance criteria
-
----
-
-### UI Mockups
-
-```text
-docs/ui/MOCKUP_INDEX.md
-```
-
-Defines:
-
-* Mockup file paths
-* Screen-to-image mapping
-* Desktop and smartphone references
-* Responsive interpretation rules
-* Mockup inspection procedure
-
-Reference images are stored under:
-
-```text
-docs/ui/mockups/pc/
-docs/ui/mockups/smartphone/
-```
-
----
-
-### Architecture
-
-```text
-docs/architecture/ARCHITECTURE.md
-```
-
-Defines:
-
-* Frontend structure
-* Backend structure
-* Database boundaries
-* API direction
-* Dummy-data replacement strategy
-* Settlement calculation architecture
-* Responsive implementation
-* Testing and deployment direction
-
----
-
-### Architecture Decisions
-
-```text
-docs/adr/0001-initial-architecture.md
-```
-
-Records:
-
-* Adopted stack
-* Monorepo decision
-* Considered alternatives
-* Consequences
-* Risks
-* Change conditions
-
----
-
-### Current Progress
-
-```text
-docs/current/CURRENT_STATE.md
-```
-
-Records:
-
-* Verified current state
-* Completed work
-* Missing documents
-* Unimplemented areas
-* Open decisions
-* Next approved work
-
----
-
-### Cursor Project Rule
-
-```text
-.cursor/rules/splitmate-core.mdc
-```
-
-Controls AI-assisted implementation by enforcing:
-
-* Required document reading
-* Scope restrictions
-* Architecture rules
-* Mockup inspection
-* No-guessing behavior
-* No duplicate implementation
-* Calculation safety
-* Documentation updates
-
----
-
-## UI Mockups
-
-The project contains reference mockups for:
-
-* Home / project list
-* Project creation
-* Continuous project detail
-* Event project detail
-* Expense registration
-* Analytics
-* Desktop layouts
-* Smartphone layouts
-
-Mockups are implementation references only.
-
-They must not be loaded as runtime application assets.
-
-Business rules are controlled by `PRODUCT_CHARTER.md`.
-
-Visual structure is controlled by `docs/ui/MOCKUP_INDEX.md` and the referenced images.
-
----
-
-## Money Rules
-
-The MVP uses:
-
-* JPY only
-* Integer monetary values
-* No decimal monetary display
-
-Approved internal representation:
-
-```text
-Java: long / Long
-PostgreSQL: BIGINT
-JSON: integer
-```
-
-Floating-point monetary values must not be used.
-
----
-
-## Settlement Direction
-
-The planned settlement flow is:
-
-1. Divide each expense among its selected participants.
-2. Store deterministic integer participant shares.
-3. Calculate each member’s paid amount.
-4. Calculate each member’s burden amount.
-5. Calculate each member’s balance.
-6. Generate direct debtor-to-creditor transfers.
-7. Minimize unnecessary transfer transactions.
-8. Apply the project rounding unit to final transfers.
-9. Preserve settlement calculations as immutable runs.
-10. Track completion status per settlement transfer.
-
-Detailed rules are defined in:
-
-```text
-PRODUCT_CHARTER.md
-docs/architecture/ARCHITECTURE.md
-```
-
----
-
-## Development Phases
-
-### Phase 1: Documentation and Repository Preparation
-
-* Product Charter
-* Mockup Index
-* Architecture
-* ADR
-* Cursor Rule
-* Current State
-* README
-* Repository and mockup verification
-
-### Phase 2: Static Frontend
-
-* App shell
-* Home
-* Project creation
-* Continuous project detail
-* Event project detail
-* Expense form
-* Analytics
-* Responsive layouts
-
-### Phase 3: Centralized Dummy Data
-
-* Typed project fixtures
-* Expense fixtures
-* Settlement fixtures
-* Analytics fixtures
-* Mock repository adapters
-
-### Phase 4: Frontend Behavior
-
-* Form validation
-* Filters
-* Modal and sheet behavior
-* Mobile analytics collapse
-* Local dummy-data interactions
-
-### Phase 5: Backend and Persistence
-
-Before this phase:
-
-* Create `docs/api/API_SPEC.md`
-* Create `docs/database/DATABASE_DESIGN.md`
-
-Then implement:
-
-* Spring Boot
-* PostgreSQL
-* Flyway
-* Project API
-* Expense API
-* Settlement calculation
-* Analytics aggregation
-
-### Phase 6: Integration and Completion
-
-* Replace mock repositories with API repositories
-* Add loading and error states
-* Add automated tests
-* Verify responsive behavior
-* Deploy the application
-* Add screenshots and working setup instructions
-
----
-
-## Setup
-
-The frontend has been initialized under `frontend/`.
-
-Verified frontend command:
+Java 21、Node.js 22.12 以上、Docker Compose を用意し、リポジトリのルートで実行します。
 
 ```bash
-npm --prefix frontend run build
+(cd frontend && npm ci)
+POSTGRES_PORT=127.0.0.1:5432 docker compose up -d --wait postgres
+./scripts/dev.sh
 ```
 
-Full local setup is not complete yet. This section must be expanded after:
+ブラウザで `http://127.0.0.1:5173` を開き、プロジェクトを作成します。Spring Boot は `127.0.0.1:8080` で待ち受け、Vite が API を転送します。終了は `Ctrl+C`、DB の停止は `docker compose stop postgres` です。
 
-* `backend/` is initialized
-* Environment variables are defined
-* Local startup commands are verified
-
----
-
-## Environment Variables
-
-Environment variables have not yet been finalized.
-
-Planned examples include:
-
-```text
-VITE_API_BASE_URL
-VITE_DATA_SOURCE
-SPRING_DATASOURCE_URL
-SPRING_DATASOURCE_USERNAME
-SPRING_DATASOURCE_PASSWORD
-FRONTEND_ALLOWED_ORIGIN
-PROJECT_TOKEN_SECRET
+```bash
+(cd backend && ./gradlew test)
+(cd frontend && npm run build)
 ```
 
-The final variables must be documented only after they are implemented and verified.
+ローカル起動は開発用です。架空データでの確認に使い、外部公開する場合は専用プロファイルと専用 DB の受入条件を確認します。
 
-Real secrets must never be committed.
+## 開発状況
 
----
+| 状態 | 範囲 |
+| --- | --- |
+| 実装済み | プロジェクト・支出管理、イベント／月次精算、継続プロジェクト分析、ローカル／提出プロファイルの集計 |
+| 設計・一部基盤を実装 | 匿名 Subject／セッション、共有・復旧、プロジェクト単位の権限 |
+| 今後 | 匿名アクセスの製品経路への接続と切替検証、任意ログイン、プロジェクトの属性編集、メンバーの無効化・再有効化 |
 
-## Testing
-
-No automated application tests currently exist yet.
-
-Planned critical test areas include:
-
-* Expense allocation
-* Remainder distribution
-* Member-balance calculation
-* Settlement optimization
-* Settlement rounding
-* Settlement snapshot behavior
-* Monthly filtering
-* Event archive restrictions
-* Project-form validation
-* Expense-form validation
-* Responsive UI behavior
-
-Do not state that tests pass until they have actually been executed.
-
----
-
-## Development Rules
-
-Before making code changes:
-
-1. Read `PRODUCT_CHARTER.md`.
-2. Read `docs/architecture/ARCHITECTURE.md`.
-3. Read `docs/current/CURRENT_STATE.md`.
-4. Read applicable ADRs.
-5. Read `.cursor/rules/splitmate-core.mdc`.
-6. For UI work, read `docs/ui/MOCKUP_INDEX.md`.
-7. Open all mockups assigned to the target screen.
-8. Search for an existing implementation before creating a new one.
-9. Explain affected files and the implementation plan.
-10. Do not add unapproved functionality.
-
-When required information is missing, stop and report the missing requirement instead of guessing.
-
----
-
-## Next Approved Work
-
-The next approved step is:
-
-1. Implement the Project Creation detailed static UI from inspected mockups.
-
-Backend, API, and database implementation must not begin before the corresponding API and database specifications are created.
-
----
-
-## License
-
-A license has not yet been selected.
-
-Do not assume that the repository is open source until a license file is explicitly added.
+このポートフォリオのソースは開発用 `main` の `4d78f3257de952a325a44191217291d063cf42ce` を基にしています。プロジェクト独自コードのライセンスは未選定です。依存ライブラリにはそれぞれのライセンスが適用されます。 プロジェクトの既定画像にはSpendy用に制作したオリジナルの図形イラストを使用しています。

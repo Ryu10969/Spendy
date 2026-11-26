@@ -1,74 +1,72 @@
 import { Link } from "react-router-dom";
 import type { ProjectListItem } from "../../../types/project";
-import { formatSignedYen, formatYen } from "../../../utils/formatMoney";
-import { MemberAvatarGroup } from "./MemberAvatarGroup";
+import continuousImage from "../../../assets/projects/default-continuous.webp";
+import eventImage from "../../../assets/projects/default-event.webp";
+import { formatYen } from "../../../utils/formatMoney";
 import { ProjectTypeBadge } from "./ProjectTypeBadge";
 import styles from "./ProjectCard.module.css";
 
 type ProjectCardProps = {
   project: ProjectListItem;
+  onDelete: (project: ProjectListItem) => void;
 };
 
-export function ProjectCard({ project }: ProjectCardProps) {
+function MetaIcon({ path }: { path: string }) {
+  return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={path} /></svg>;
+}
+
+export function ProjectCard({ project, onDelete }: ProjectCardProps) {
   const isArchived = project.status === "ARCHIVED";
-  const linkLabel = isArchived
-    ? `${project.name} の詳細を開く。アーカイブ済み・閲覧のみ。`
-    : `${project.name} の詳細を開く`;
-  const settlementLabel =
-    project.summary.pendingSettlementCount > 0
-      ? `精算待ち ${project.summary.pendingSettlementCount}件`
-      : "精算済み";
+  const isEvent = project.type === "EVENT";
 
   return (
-    <Link
-      className={`${styles.card} ${isArchived ? styles.archived : ""}`}
-      to={`/p/${project.publicToken}`}
-      aria-label={linkLabel}
-    >
-      <div className={styles.header}>
-        <span className={styles.projectIcon} aria-hidden="true">
-          {project.icon}
-        </span>
-        <div className={styles.titleBlock}>
-          <div className={styles.titleRow}>
-            <h3 className={styles.title}>{project.name}</h3>
+    <article className={`${styles.card} ${isEvent ? styles.event : ""} ${isArchived ? styles.archived : ""}`}>
+      <Link className={styles.navigation} to={`/p/${project.publicToken}`}>
+        <img className={styles.thumbnail} src={isEvent ? eventImage : continuousImage} alt="" />
+        <span className={styles.body}>
+          <strong className={styles.title}>{project.name}</strong>
+          <span className={styles.badges}>
             <ProjectTypeBadge type={project.type} />
-          </div>
-          <p className={styles.description}>{project.summary.description}</p>
-        </div>
-        {isArchived ? <span className={styles.readOnlyPill}>閲覧のみ</span> : null}
-      </div>
-
-      <div className={styles.metaRow}>
-        <MemberAvatarGroup members={project.members} />
-        <span className={styles.updated}>◷ {project.summary.lastUpdatedLabel}</span>
-      </div>
-
-      <dl className={styles.summaryGrid}>
-        <div className={styles.summaryItem}>
-          <dt>合計</dt>
-          <dd>{formatYen(project.summary.totalExpenseYen)}</dd>
-        </div>
-        <div className={styles.summaryItem}>
-          <dt>件数</dt>
-          <dd>{project.summary.expenseCount}</dd>
-        </div>
-        <div className={`${styles.summaryItem} ${styles.balanceItem}`}>
-          <dt>収支サマリー</dt>
-          <dd className={project.summary.balanceYen >= 0 ? styles.positive : styles.negative}>
-            {formatSignedYen(project.summary.balanceYen)}
-          </dd>
-        </div>
-      </dl>
-
-      <div className={styles.footer}>
-        <span className={project.summary.pendingSettlementCount > 0 ? styles.waitingPill : styles.donePill}>
-          {settlementLabel}
+            {isArchived ? <span className={styles.archivedStatus}>アーカイブ済み・閲覧のみ</span> : null}
+          </span>
+          <span className={styles.metadata}>
+            <span aria-label={`メンバー ${project.members.length}人`}><MetaIcon path="M15 7a3 3 0 1 1-6 0 3 3 0 0 1 6 0M3 21v-3c0-5 18-5 18 0v3ZM18 4a3 3 0 0 1 0 6" />{project.members.length}人</span>
+            <span aria-label={`支出 ${project.summary.expenseCount}件`}><MetaIcon path="M4 5h16v16H4ZM4 10h16M8 3v4m8-4v4" />{project.summary.expenseCount}件</span>
+            <span><MetaIcon path="M22 12a10 10 0 1 1-20 0 10 10 0 0 1 20 0M12 6v6l4 3" />更新 {project.summary.lastUpdatedLabel}</span>
+          </span>
+          {/* Provisional placement of the optional settlement count. */}
+          {project.summary.pendingSettlementCount != null ? (
+            <span className={styles.supplement}>未精算 {project.summary.pendingSettlementCount}件</span>
+          ) : null}
         </span>
-        <span className={styles.chevron} aria-hidden="true">
-          ›
+        <span className={styles.spending}>
+          <span>全期間の支出</span>
+          <strong className={styles.amount}>{formatYen(project.summary.totalExpenseYen)}</strong>
         </span>
-      </div>
-    </Link>
+      </Link>
+      <details className={styles.actions}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) event.currentTarget.open = false;
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Escape") {
+            event.currentTarget.open = false;
+            event.currentTarget.querySelector("summary")?.focus();
+          }
+        }}>
+        <summary className={styles.more} aria-label={`${project.name}の操作`}><span aria-hidden="true">⋮</span></summary>
+        <div className={styles.actionPanel}>
+          <button type="button" className={styles.deleteButton} aria-label={`${project.name}を削除`}
+            onClick={(event) => {
+              const details = event.currentTarget.closest("details");
+              if (details) {
+                details.open = false;
+                details.querySelector("summary")?.focus();
+              }
+              onDelete(project);
+            }}>プロジェクトを削除</button>
+        </div>
+      </details>
+    </article>
   );
 }

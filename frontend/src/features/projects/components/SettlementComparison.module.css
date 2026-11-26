@@ -1,0 +1,13 @@
+.grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); margin-top: var(--space-4); }
+.sameResult { min-width: 0; margin: 0; color: var(--color-text-secondary); overflow-wrap: anywhere; }
+.column { min-width: 0; border-top: 1px solid var(--color-border-structural); }
+.heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2); padding-top: var(--space-3); }
+.heading h3 { margin: 0; color: var(--color-text-primary); font-size: var(--font-size-md); overflow-wrap: anywhere; }
+.selected { color: var(--color-state-selected-indicator); font-size: var(--font-size-xs); font-weight: var(--font-weight-semibold); }
+.count { margin: var(--space-2) 0; color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.list { margin: 0; padding: 0; list-style: none; }
+.list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-1) var(--space-3); padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border-row); }
+.parties { min-width: 0; color: var(--color-text-primary); overflow-wrap: anywhere; }
+.list strong { min-width: 0; max-width: 10rem; justify-self: end; color: var(--color-text-primary); text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.status { grid-column: 1 / -1; color: var(--color-text-secondary); font-size: var(--font-size-xs); }
+.empty { color: var(--color-text-secondary); }

@@ -4,9 +4,9 @@
   place-items: center;
   gap: var(--space-2);
   padding: var(--space-8);
-  border: 1px dashed var(--color-border-strong);
+  border: 1px dashed var(--color-border-structural);
   border-radius: var(--radius-xl);
-  background: rgba(255, 255, 255, 0.72);
+  background: var(--color-background-surface);
   text-align: center;
 }
 
@@ -20,7 +20,7 @@
 .description {
   max-width: 28rem;
   margin: 0;
-  color: var(--color-text-muted);
+  color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
 }
 

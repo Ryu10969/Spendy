@@ -1,0 +1,16 @@
+.header {
+  position: relative;
+  display: flex;
+  height: calc(var(--home-header-height) + env(safe-area-inset-top));
+  align-items: center;
+  justify-content: center;
+  padding: env(safe-area-inset-top) max(96px, env(safe-area-inset-right)) 0 max(96px, env(safe-area-inset-left));
+}
+.brand { display: flex; min-width: 0; align-items: center; justify-content: center; }
+.logo { width: min(13rem, 48vw); max-width: 100%; height: auto; }
+.themeToggle { position: absolute; top: calc(env(safe-area-inset-top) + 14px); left: max(16px, env(safe-area-inset-left)); }
+@media (min-width: 1200px) {
+  .header { padding-inline: max(24px, env(safe-area-inset-left)) max(24px, env(safe-area-inset-right)); }
+  .logo { width: 17.5rem; }
+  .header .themeToggle { display: none; }
+}
