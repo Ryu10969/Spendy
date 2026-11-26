@@ -1,6 +1,13 @@
 @import "./tokens.css";
 @import "./breakpoints.css";
 
+html[data-home-reveal]::view-transition-group(root),
+html[data-home-reveal]::view-transition-old(root),
+html[data-home-reveal]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
 *,
 *::before,
 *::after {
@@ -9,9 +16,11 @@
 
 html {
   min-width: 0;
-  background: var(--color-background);
+  scrollbar-gutter: stable;
+  background: var(--color-background-page);
   color: var(--color-text-primary);
   font-family: var(--font-family-base);
+  font-variant-numeric: tabular-nums;
   line-height: var(--line-height-base);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -52,6 +61,6 @@ svg {
 }
 
 :focus-visible {
-  outline: 3px solid var(--color-focus-ring);
+  outline: 3px solid var(--color-border-focus);
   outline-offset: 3px;
 }

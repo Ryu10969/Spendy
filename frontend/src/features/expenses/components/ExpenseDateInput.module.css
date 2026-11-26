@@ -1,0 +1,30 @@
+.root { min-width: 0; }
+.inputRow { display: flex; min-width: 0; border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-background-input); }
+.inputRow:has([aria-invalid="true"]) { border-color: var(--color-border-error); }
+.inputRow:focus-within { outline: 3px solid var(--color-focus-ring); outline-offset: 2px; }
+.input { width: 100%; min-width: 0; min-height: 3rem; box-sizing: border-box; border: 0; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); background: transparent; color: var(--color-text-primary); font: inherit; font-size: var(--font-size-md); font-variant-numeric: tabular-nums; }
+.input:focus { outline: none; }
+.trigger { display: grid; place-items: center; flex: 0 0 3rem; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--color-action-link); cursor: pointer; }
+.panel { padding: 0; border: 0; overflow: visible; background: transparent; box-shadow: none; }
+.content { box-sizing: border-box; width: 100%; min-width: 0; padding: var(--space-2); border: var(--border-default); border-radius: var(--radius-lg); background: var(--color-background-elevated); box-shadow: var(--shadow-sm); }
+.panel[data-overlay="true"] { display: grid; place-items: center; padding: 8px; background: var(--color-background-overlay); }
+.panel[data-overlay="true"] .content { width: min(100%, 336px); max-height: var(--expense-calendar-max-height); overflow-y: auto; overscroll-behavior: contain; }
+.inlineCalendar .content { box-shadow: none; }
+.inlineCalendar { max-height: none; overflow: visible; }
+.panel.inlineCalendar button { min-height: 3rem; }
+.navigation { display: grid; grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem; align-items: center; text-align: center; gap: var(--space-2); margin-bottom: var(--space-2); }
+.panel button { min-height: 2.75rem; border: 0; border-radius: var(--radius-md); background: transparent; color: var(--color-text-primary); font: inherit; cursor: pointer; }
+.navigation button { font-size: var(--font-size-xl); }
+.panel button:hover, .trigger:hover { background: var(--color-state-selected-surface); }
+.panel button:focus-visible, .trigger:focus-visible { outline: 3px solid var(--color-focus-ring); outline-offset: -3px; }
+.panel button:disabled { color: var(--color-state-disabled-text); cursor: default; }
+.grid { width: 100%; table-layout: fixed; border-collapse: separate; border-spacing: 2px; font-size: var(--font-size-md); text-align: center; }
+.grid th { height: 2rem; color: var(--color-text-secondary); font-weight: var(--font-weight-regular); }
+.grid abbr { text-decoration: none; }
+.grid td { padding: 0; }
+.grid button { position: relative; width: 100%; padding: 0; font-variant-numeric: tabular-nums; }
+.grid button[aria-current="date"] { box-shadow: inset 0 0 0 1px var(--color-state-selected-indicator); font-weight: var(--font-weight-bold); }
+.grid button[aria-current="date"]::after { content: ""; position: absolute; bottom: 4px; left: calc(50% - 2px); width: 4px; height: 4px; border-radius: var(--radius-full); background: currentColor; }
+.grid button[aria-pressed="true"] { background: var(--color-action-primary); color: var(--color-text-on-primary); font-weight: var(--font-weight-bold); }
+.help { margin: var(--space-2) 0; color: var(--color-text-secondary); font-size: var(--font-size-xs); }
+.close { width: 100%; }

@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: splitmate-backend
+  profiles:
+    default: local
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+
+spendingmate:
+  local:
+    analytics-overview-enabled: false
+    home-overview-enabled: false
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.error: OFF
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never

@@ -1,0 +1,15 @@
+.editor { margin-top: var(--space-3); color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+.editor summary { width: fit-content; min-height: 2.75rem; padding: var(--space-2) 0; color: var(--color-action-link); font-weight: var(--font-weight-semibold); cursor: pointer; }
+.editor summary:focus-visible, .editor button:focus-visible, .editor input:focus-visible { outline: 3px solid var(--color-focus-ring); outline-offset: 2px; }
+.body { display: grid; gap: var(--space-3); max-width: 32rem; padding: var(--space-3); border: 1px solid var(--color-border-control); border-radius: var(--radius-sm); background: var(--color-surface); }
+.body form { display: grid; gap: var(--space-2); }
+.body label { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+.row, .memberRow { display: flex; min-width: 0; align-items: center; flex-wrap: wrap; gap: var(--space-2); }
+.row input { flex: 1 1 12rem; min-width: 0; min-height: 2.75rem; padding: 0 var(--space-3); border: 1px solid var(--color-border-control); border-radius: var(--radius-sm); background: var(--color-background-input); color: var(--color-text-primary); font: inherit; }
+.body button { min-height: 2.75rem; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-action-outline-accent); border-radius: var(--radius-sm); background: transparent; color: var(--color-action-link); font: inherit; font-weight: var(--font-weight-semibold); cursor: pointer; }
+.body button:disabled { opacity: .6; cursor: wait; }
+.list { display: grid; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.list li { min-width: 0; border-top: 1px solid var(--color-border-structural); padding-top: var(--space-2); }
+.memberRow { justify-content: space-between; }
+.memberRow span { min-width: 0; overflow-wrap: anywhere; }
+.notice { margin: 0; color: var(--color-text-secondary); }

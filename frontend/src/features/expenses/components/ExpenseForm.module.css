@@ -1,0 +1,132 @@
+.fields {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.main,
+.optionalFields,
+.primaryFields,
+.field {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.field { gap: var(--space-2); }
+.field label,
+.participants legend {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+}
+
+.currency,
+.optional,
+.hint,
+.splitNote { color: var(--color-text-secondary); }
+.optional { font-weight: var(--font-weight-regular); }
+.required { color: var(--color-text-error); }
+
+.control {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 3rem;
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  background: var(--color-background-input);
+  color: var(--color-text-primary);
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+}
+
+.control:focus-visible,
+.member input:focus-visible {
+  outline: 3px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+.control[aria-invalid="true"] { border-color: var(--color-border-error); }
+.amountWrap {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  width: 100%;
+  min-width: 0;
+  min-height: 3.5rem;
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  background: var(--color-background-input);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-primary);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+}
+.amountWrap:focus-within {
+  outline: 3px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+.amountWrap:has(.amount[aria-invalid="true"]) { border-color: var(--color-border-error); }
+.amountWrap > span {
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+.amountWrap .amount {
+  flex: 1 1 0;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+}
+
+textarea.control { min-height: 5rem; resize: vertical; }
+.hint,
+.splitNote,
+.roundingNote { margin: 0; font-size: var(--font-size-xs); }
+.roundingNote { color: var(--color-text-secondary); overflow-wrap: anywhere; }
+
+.participants {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.participants legend { padding: 0 0 var(--space-2); }
+.memberList { display: grid; gap: var(--space-1); }
+.member {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  min-height: 2.75rem;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+.member input { width: 1.25rem; height: 1.25rem; flex: 0 0 auto; accent-color: var(--color-action-primary); }
+.member span { min-width: 0; overflow-wrap: anywhere; }
+.splitNote { margin-top: var(--space-3); }
+.roundingNote { margin-top: var(--space-1); }
+
+.choiceCards .member { display: flex; align-items: center; min-width: 0; min-height: 3rem; gap: var(--space-3); padding: var(--space-3); border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-background-surface); color: var(--color-text-primary); font-size: var(--font-size-md); cursor: pointer; }
+.choiceCards .member:has(input:checked) { border-color: var(--color-state-selected-indicator); background: var(--color-state-selected-surface); }
+.choiceCards .member:has(input:focus-visible) { outline: 3px solid var(--color-focus-ring); outline-offset: 2px; }
+.choiceCards .memberList { gap: var(--space-2); }
+.choiceCards .participants legend { font-size: var(--font-size-md); }
+
+@media (min-width: 768px) {
+  .main { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); }
+  .participants { border-left: 1px solid var(--color-border-structural); padding-left: var(--space-5); }
+  .optionalFields { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-top: 1px solid var(--color-border-structural); padding-top: var(--space-5); }
+}
+
+@media (max-width: 767px) {
+  .control { min-height: 3rem; }
+  .member { min-height: 3rem; }
+}

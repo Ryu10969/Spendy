@@ -16,8 +16,14 @@ backend/build/
 
 # IDE-generated files
 .idea/
-.vscode/
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
 *.iml
+
+# Operator-local AWS parameters (never commit origin-header or account values)
+infra/aws/parameters/*.json
+!infra/aws/parameters/*.example.json
 
 # Logs
 *.log
@@ -26,3 +32,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Generated Graphify output
+graphify-out/
+
+# Locally installed Codex skills
+.codex/skills/graphify/

@@ -1,0 +1,27 @@
+spring:
+  flyway:
+    enabled: false
+  autoconfigure:
+    exclude: org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: none
+server:
+  address: 0.0.0.0
+  port: ${PORT:10000}
+  forward-headers-strategy: none
+  servlet:
+    session:
+      tracking-modes: cookie
+  tomcat:
+    threads:
+      max: 16
+      min-spare: 2
+    max-connections: 64
+    accept-count: 32
+spendingmate:
+  demo:
+    overviews-enabled: ${SPENDINGMATE_DEMO_OVERVIEWS_ENABLED:false}

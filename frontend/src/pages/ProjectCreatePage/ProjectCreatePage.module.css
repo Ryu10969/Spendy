@@ -1,7 +1,7 @@
 .page {
   display: grid;
   width: min(100%, 44rem);
-  gap: var(--space-5);
+  gap: var(--space-4);
   margin: 0 auto;
 }
 
@@ -11,142 +11,66 @@
   gap: var(--space-2);
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
 }
 
 .breadcrumb a:hover {
-  color: var(--color-primary-strong);
+  color: var(--color-action-link);
 }
 
 .backLink {
   display: inline-flex;
-  width: fit-content;
-  min-height: 2.75rem;
   align-items: center;
   gap: var(--space-2);
+  width: fit-content;
+  min-height: 2.5rem;
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
+  font-weight: var(--font-weight-semibold);
 }
 
 .backLink:hover {
-  color: var(--color-primary-strong);
-}
-
-.header {
-  display: grid;
-  gap: var(--space-2);
+  color: var(--color-action-link);
 }
 
 .title {
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(2.25rem, 8vw, 3rem);
+  font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
   line-height: var(--line-height-tight);
-}
-
-.subtitle {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: var(--font-size-md);
 }
 
 .form {
   display: grid;
   gap: var(--space-6);
-  min-width: 0;
+  margin-top: var(--space-2);
 }
 
-.fieldset,
-.fieldGroup {
+.field {
   display: grid;
   min-width: 0;
   gap: var(--space-3);
-  margin: 0;
-  border: 0;
-  padding: 0;
 }
 
-.legend,
 .label {
-  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
   color: var(--color-text-primary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
 }
 
-.requiredMark {
+.required {
   color: var(--color-danger);
 }
 
-.optionalText {
+.optional {
   color: var(--color-text-muted);
-  font-weight: var(--font-weight-semibold);
+  font-weight: var(--font-weight-regular);
 }
 
-.projectTypeGrid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4);
-}
-
-.projectTypeCard,
-.roundingOption {
-  position: relative;
-  display: grid;
-  min-width: 0;
-  border: var(--border-default);
-  border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.88);
-  color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
-}
-
-.projectTypeCard {
-  min-height: 7rem;
-  align-content: start;
-  gap: var(--space-2);
-  padding: var(--space-5);
-}
-
-.projectTypeCard:hover,
-.roundingOption:hover {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
-}
-
-.projectTypeCard:focus-within,
-.roundingOption:focus-within {
-  outline: 3px solid var(--color-focus-ring);
-  outline-offset: 3px;
-}
-
-.projectTypeCardSelected,
-.roundingOptionSelected {
-  border-color: var(--color-primary);
-  background: var(--color-primary-soft);
-  box-shadow: 0 0 0 1px var(--color-primary);
-}
-
-.projectTypeIcon {
-  font-size: var(--font-size-xl);
-  line-height: 1;
-}
-
-.projectTypeLabel {
-  font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-bold);
-}
-
-.projectTypeDescription {
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  line-height: var(--line-height-base);
-}
-
-.visuallyHiddenInput {
+.srOnly {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -155,302 +79,237 @@
   white-space: nowrap;
 }
 
-.textInput,
-.textarea {
-  width: 100%;
+.input {
   min-width: 0;
-  border: var(--border-default);
-  border-radius: var(--radius-lg);
-  background: var(--color-surface);
+  min-height: 2.75rem;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  background: var(--color-background-input);
   color: var(--color-text-primary);
-  box-shadow: var(--shadow-sm);
+  font-size: var(--font-size-md);
 }
 
-.textInput {
-  min-height: 3.25rem;
-  padding: 0 var(--space-4);
+.input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input:disabled {
+  background: var(--color-surface-muted);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
 }
 
 .textarea {
+  min-width: 0;
+  min-height: 6rem;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-md);
+  background: var(--color-background-input);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-base);
   resize: vertical;
-  min-height: 7rem;
-  padding: var(--space-4);
 }
 
-.textInput::placeholder,
 .textarea::placeholder {
   color: var(--color-text-muted);
 }
 
-.textInput[aria-invalid="true"],
-.textarea[aria-invalid="true"] {
-  border-color: var(--color-danger);
-}
-
 .currencyRow {
   display: flex;
-  min-width: 0;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--space-3);
 }
 
-.currencyInput {
-  max-width: 12rem;
-  background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  cursor: default;
+.currencyRow .input {
+  flex: 0 1 14rem;
 }
 
-.fixedBadge {
+.currencyNote {
   display: inline-flex;
-  min-height: 2rem;
+  min-height: 1.75rem;
   align-items: center;
   border-radius: var(--radius-full);
   padding: 0 var(--space-3);
   background: var(--color-surface-muted);
-  color: var(--color-text-muted);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-bold);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
 }
 
-.roundingGrid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
-}
-
-.roundingOption {
-  min-width: 4.75rem;
+.submitButton {
   min-height: 3.25rem;
-  place-items: center;
-  padding: 0 var(--space-4);
+  margin-top: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-md);
+}
+
+.submitButton:hover {
+  background: var(--color-primary-strong);
+}
+
+.submitButton:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.apiError {
+  margin: 0;
+  border-left: 3px solid var(--color-danger);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-danger);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+}
+
+.confirmation {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  border: var(--border-default);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.confirmationBadge {
+  justify-self: start;
+  margin: 0;
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  background: var(--color-background-elevated);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-bold);
 }
 
-.helpText {
+.confirmationTitle {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+}
+
+.confirmationNote {
   margin: 0;
   color: var(--color-text-muted);
   font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
 }
 
-.memberList {
+.summaryList {
   display: grid;
   gap: var(--space-3);
+  margin: var(--space-2) 0 0;
 }
 
-.memberRow {
+.summaryRow {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--space-3);
+  grid-template-columns: 9rem 1fr;
+  gap: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--border-default);
 }
 
-.memberLabel {
-  grid-column: 1 / -1;
+.summaryRow dt {
+  margin: 0;
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
 }
 
-.removeMemberButton,
-.addMemberButton,
-.secondaryAction,
-.primaryAction {
+.summaryRow dd {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  word-break: break-word;
+}
+
+.confirmationActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.primaryButton {
   display: inline-flex;
-  min-height: 3.25rem;
+  min-height: 2.75rem;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  border-radius: var(--radius-lg);
   padding: 0 var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-text-on-primary);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-bold);
 }
 
-.removeMemberButton,
-.addMemberButton,
-.secondaryAction {
-  border: var(--border-default);
-  background: var(--color-surface);
-  color: var(--color-text-primary);
-}
-
-.removeMemberButton:hover,
-.addMemberButton:hover,
-.secondaryAction:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary-strong);
-}
-
-.addMemberButton {
-  width: fit-content;
-}
-
-.actions {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: center;
-}
-
-.primaryAction {
-  border: 0;
-  background: var(--color-primary);
-  color: var(--color-surface);
-  box-shadow: var(--shadow-md);
-}
-
-.primaryAction:hover {
+.primaryButton:hover {
   background: var(--color-primary-strong);
 }
 
-.errorText {
-  margin: 0;
-  color: var(--color-danger);
+.secondaryButton {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--space-5);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
   font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
-.errorSummary,
-.successMessage {
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-}
-
-.errorSummary {
-  border: 1px solid rgba(185, 28, 28, 0.22);
-  background: rgba(185, 28, 28, 0.07);
-  color: var(--color-danger);
-}
-
-.errorSummaryTitle {
-  margin: 0;
   font-weight: var(--font-weight-bold);
 }
 
-.errorSummaryList {
-  margin: var(--space-2) 0 0;
-  padding-left: var(--space-5);
-}
-
-.successMessage {
-  border: 1px solid rgba(21, 128, 61, 0.22);
-  background: rgba(21, 128, 61, 0.08);
-  color: var(--color-success);
+.secondaryButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-action-link);
 }
 
 @media (min-width: 1200px) {
   .breadcrumb {
-    display: inline-flex;
-  }
-
-  .title {
-    font-size: var(--font-size-2xl);
+    display: flex;
   }
 }
 
 @media (max-width: 767px) {
-  .page {
-    width: 100%;
-    gap: var(--space-6);
-  }
-
-  .backLink {
-    min-height: 3rem;
-    font-size: var(--font-size-lg);
-  }
-
   .title {
-    font-size: 2.5rem;
-  }
-
-  .subtitle {
-    font-size: var(--font-size-sm);
-  }
-
-  .form {
-    gap: var(--space-8);
-    padding-bottom: var(--space-8);
-  }
-
-  .legend,
-  .label {
-    font-size: var(--font-size-lg);
-  }
-
-  .projectTypeGrid {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-  }
-
-  .projectTypeCard {
-    min-height: 11rem;
-    border-radius: var(--radius-xl);
-    padding: var(--space-6);
-  }
-
-  .projectTypeIcon {
-    font-size: 2rem;
-  }
-
-  .projectTypeLabel {
     font-size: var(--font-size-xl);
   }
 
-  .projectTypeDescription {
-    font-size: var(--font-size-md);
+  .input,
+  .submitButton {
+    min-height: 3rem;
   }
 
-  .textInput,
-  .roundingOption,
-  .removeMemberButton,
-  .addMemberButton,
-  .secondaryAction,
-  .primaryAction {
-    min-height: 3.75rem;
+  .currencyRow .input {
+    flex: 1 1 100%;
   }
 
-  .textarea {
-    min-height: 8rem;
-  }
-
-  .currencyRow {
-    flex-wrap: wrap;
-  }
-
-  .currencyInput {
-    max-width: none;
-    flex: 1 1 12rem;
-  }
-
-  .roundingGrid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .roundingOption {
-    min-width: 0;
-    font-size: var(--font-size-lg);
-  }
-
-  .memberRow {
+  .summaryRow {
     grid-template-columns: 1fr;
+    gap: var(--space-1);
   }
 
-  .removeMemberButton,
-  .addMemberButton {
+  .confirmationActions {
+    flex-direction: column;
+  }
+
+  .primaryButton,
+  .secondaryButton {
     width: 100%;
-  }
-
-  .actions {
-    grid-template-columns: 1fr;
-  }
-
-  .secondaryAction {
-    order: 2;
-  }
-
-  .primaryAction {
-    order: 1;
+    min-height: 3rem;
   }
 }

@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: spendingmate-demo
+    runtime: docker
+    plan: free
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    autoDeployTrigger: 'off'
+    # Use Render's default TCP probe in both access modes.
+    envVars:
+      - key: DEMO_DB_TARGET
+        value: neon
+      - key: DEMO_DB_NAME
+        value: spendingmate_demo
+      - key: SPENDINGMATE_DEMO_OVERVIEWS_ENABLED
+        value: 'true'
+      - key: DEMO_PUBLIC_ACCESS_ENABLED
+        value: 'true'
+      - key: DEMO_PUBLIC_ORIGIN
+        sync: false
+      - key: DEMO_DB_HOST
+        sync: false
+      - key: DEMO_DB_ID
+        sync: false
+      - key: DEMO_DB_RUNTIME_PASSWORD
+        sync: false

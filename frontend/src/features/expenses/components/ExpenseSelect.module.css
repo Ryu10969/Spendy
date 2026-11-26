@@ -1,0 +1,16 @@
+.root { min-width: 0; }
+.inputRow { display: flex; align-items: center; gap: var(--space-2); min-width: 0; }
+.clear { flex: 0 0 auto; min-height: 3rem; padding: var(--space-2); border: var(--border-default); border-radius: var(--radius-md); background: var(--color-background-input); color: var(--color-action-link); font: inherit; font-size: var(--font-size-md); cursor: pointer; }
+.clear:hover { background: var(--color-state-selected-surface); }
+.clear:focus-visible { outline: 3px solid var(--color-focus-ring); outline-offset: 2px; }
+.trigger { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); box-sizing: border-box; width: 100%; min-width: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); border: 1px solid var(--color-border-control); border-radius: var(--radius-md); background: var(--color-background-input); color: var(--color-text-primary); font: inherit; font-size: var(--font-size-md); line-height: var(--line-height-base); text-align: left; cursor: pointer; }
+.trigger > span:first-child, .option > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.chevron { flex: 0 0 auto; }
+.trigger:focus-visible { outline: 3px solid var(--color-focus-ring); outline-offset: 2px; }
+.trigger[aria-invalid="true"] { border-color: var(--color-border-error); }
+.menu { padding: var(--space-1); max-height: min(20rem, 50dvh); }
+.option { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); box-sizing: border-box; min-width: 0; min-height: 3rem; padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); color: var(--color-text-primary); cursor: pointer; }
+.option > span:last-child { flex: 0 0 1rem; color: var(--color-action-link); }
+.option[aria-selected="true"] { background: var(--color-state-selected-surface); font-weight: var(--font-weight-bold); }
+.option:hover { background: var(--color-state-selected-surface); }
+.option[data-active="true"] { outline: 2px solid var(--color-focus-ring); outline-offset: -2px; }

@@ -1,376 +1,216 @@
-import { useRef, useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
-import {
-  createInitialProjectCreateForm,
-  createMemberInput,
-  getTrimmedMemberNames,
-  hasProjectCreateErrors,
-  projectTypeOptions,
-  roundingUnitOptions,
-  validateProjectCreateForm,
-  type ProjectCreateFormValues,
-  type ProjectCreateValidationErrors,
-  type RoundingUnit,
-} from "../../features/projects/projectCreateForm";
-import type { ProjectType } from "../../types/project";
+import { useRef, useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FieldError } from "../../components/common/FieldError";
+import { MemberListEditor } from "../../features/projects/components/MemberListEditor";
+import { ProjectTypeSelector } from "../../features/projects/components/ProjectTypeSelector";
+import { RoundingUnitSelector } from "../../features/projects/components/RoundingUnitSelector";
+import { useCreateProjectMutation } from "../../features/projects/projectQueries";
+import type {
+  ProjectCreateFormState,
+  ProjectFormMember,
+} from "../../types/project";
 import styles from "./ProjectCreatePage.module.css";
 
-const pageTitleId = "project-create-title";
-const projectTypeErrorId = "project-type-error";
-const projectNameErrorId = "project-name-error";
-const roundingUnitErrorId = "rounding-unit-error";
-const membersErrorId = "members-error";
+const initialFormState: ProjectCreateFormState = {
+  type: "CONTINUOUS",
+  name: "",
+  description: "",
+  roundingUnit: 10,
+  members: [],
+};
+
+function createMemberId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+
+  return `member-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+}
+
+const nameErrorId = "project-name-error";
+const membersErrorId = "project-members-error";
 
 export function ProjectCreatePage() {
-  const [formValues, setFormValues] = useState<ProjectCreateFormValues>(() =>
-    createInitialProjectCreateForm(),
-  );
-  const [errors, setErrors] = useState<ProjectCreateValidationErrors>({});
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const memberInputRefs = useRef<Record<string, HTMLInputElement | null>>({});
+  const navigate = useNavigate();
+  const createProjectMutation = useCreateProjectMutation();
+  const [form, setForm] = useState<ProjectCreateFormState>(initialFormState);
+  const [nameError, setNameError] = useState("");
+  const [membersError, setMembersError] = useState("");
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const memberInputRef = useRef<HTMLInputElement>(null);
 
-  const validateNextValues = (nextValues: ProjectCreateFormValues) => {
-    if (hasSubmitted) {
-      setErrors(validateProjectCreateForm(nextValues));
-    }
+  const handleAddMember = (name: string) => {
+    const member: ProjectFormMember = { id: createMemberId(), name };
+    setForm((current) => ({ ...current, members: [...current.members, member] }));
+    setMembersError("");
   };
 
-  const updateFormValues = (nextValues: ProjectCreateFormValues) => {
-    setFormValues(nextValues);
-    setSuccessMessage("");
-    validateNextValues(nextValues);
+  const handleRemoveMember = (id: string) => {
+    setForm((current) => ({
+      ...current,
+      members: current.members.filter((member) => member.id !== id),
+    }));
   };
 
-  const focusFirstError = (nextErrors: ProjectCreateValidationErrors) => {
-    const firstErrorTargetId = nextErrors.projectType
-      ? "project-type-continuous"
-      : nextErrors.projectName
-        ? "project-name"
-        : nextErrors.roundingUnit
-          ? "rounding-unit-1"
-          : nextErrors.members
-            ? `member-name-${formValues.members[0]?.id}`
-            : "";
-
-    if (!firstErrorTargetId) {
-      return;
-    }
-
-    window.requestAnimationFrame(() => {
-      document.getElementById(firstErrorTargetId)?.focus();
-    });
-  };
-
-  const handleProjectTypeChange = (projectType: ProjectType) => {
-    updateFormValues({ ...formValues, projectType });
-  };
-
-  const handleRoundingUnitChange = (roundingUnit: RoundingUnit) => {
-    updateFormValues({ ...formValues, roundingUnit });
-  };
-
-  const handleMemberNameChange = (memberId: string, memberName: string) => {
-    updateFormValues({
-      ...formValues,
-      members: formValues.members.map((member) =>
-        member.id === memberId ? { ...member, name: memberName } : member,
-      ),
-    });
-  };
-
-  const handleAddMember = () => {
-    const nextMember = createMemberInput();
-    updateFormValues({
-      ...formValues,
-      members: [...formValues.members, nextMember],
-    });
-
-    window.requestAnimationFrame(() => {
-      memberInputRefs.current[nextMember.id]?.focus();
-    });
-  };
-
-  const handleRemoveMember = (memberId: string) => {
-    const nextMembers = formValues.members.filter((member) => member.id !== memberId);
-    updateFormValues({
-      ...formValues,
-      members: nextMembers.length > 0 ? nextMembers : [createMemberInput()],
-    });
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const nextErrors = validateProjectCreateForm(formValues);
-    setHasSubmitted(true);
-    setErrors(nextErrors);
-
-    if (hasProjectCreateErrors(nextErrors)) {
-      setSuccessMessage("");
-      focusFirstError(nextErrors);
+    if (createProjectMutation.isPending) {
       return;
     }
 
-    const memberNames = getTrimmedMemberNames(formValues);
-    setSuccessMessage(
-      `入力内容の検証が完了しました。API未接続のため保存は行わず、${memberNames.length}人のメンバーを含む作成内容をこの画面で確認しています。`,
-    );
-  };
+    const trimmedName = form.name.trim();
+    let isValid = true;
 
-  const memberNames = getTrimmedMemberNames(formValues);
-  const hasAnyError = hasProjectCreateErrors(errors);
+    if (!trimmedName) {
+      setNameError("プロジェクト名を入力してください。");
+      isValid = false;
+    } else {
+      setNameError("");
+    }
+
+    if (form.members.length === 0) {
+      setMembersError("メンバーを1人以上追加してください。");
+      isValid = false;
+    } else {
+      setMembersError("");
+    }
+
+    if (!isValid) {
+      if (!trimmedName) {
+        nameInputRef.current?.focus();
+      } else if (form.members.length === 0) {
+        memberInputRef.current?.focus();
+      }
+      return;
+    }
+
+    createProjectMutation.reset();
+
+    try {
+      const project = await createProjectMutation.mutateAsync({
+        name: trimmedName,
+        ...(form.description.trim() ? { description: form.description.trim() } : {}),
+        type: form.type,
+        roundingUnit: form.roundingUnit,
+        members: form.members.map((member) => ({ name: member.name })),
+      });
+      navigate(`/p/${project.publicToken}`);
+    } catch {
+      // The mutation state renders a safe error while preserving the form values.
+    }
+  };
 
   return (
     <div className={styles.page}>
-      <nav className={styles.breadcrumb} aria-label="Breadcrumb">
+      <nav className={styles.breadcrumb} aria-label="パンくず">
         <Link to="/">プロジェクト</Link>
         <span aria-hidden="true">›</span>
-        <span>新規作成</span>
+        <span aria-current="page">新規作成</span>
       </nav>
 
       <Link className={styles.backLink} to="/">
         <span aria-hidden="true">←</span>
-        戻る
+        <span>戻る</span>
       </Link>
 
-      <header className={styles.header}>
-        <h1 className={styles.title} id={pageTitleId}>
-          新規プロジェクト作成
-        </h1>
-        <p className={styles.subtitle}>
-          継続的な共同費用、または一回限りのイベント費用を管理するプロジェクトを作成します。
-        </p>
-      </header>
+      <h1 className={styles.title}>新規プロジェクト作成</h1>
 
-      <form className={styles.form} aria-labelledby={pageTitleId} noValidate onSubmit={handleSubmit}>
-        {hasAnyError ? (
-          <div className={styles.errorSummary} role="alert" aria-labelledby="project-create-errors">
-            <p className={styles.errorSummaryTitle} id="project-create-errors">
-              入力内容を確認してください
-            </p>
-            <ul className={styles.errorSummaryList}>
-              {errors.projectType ? <li>{errors.projectType}</li> : null}
-              {errors.projectName ? <li>{errors.projectName}</li> : null}
-              {errors.roundingUnit ? <li>{errors.roundingUnit}</li> : null}
-              {errors.members ? <li>{errors.members}</li> : null}
-            </ul>
-          </div>
-        ) : null}
+      <form className={styles.form} onSubmit={handleSubmit} noValidate>
+        <ProjectTypeSelector
+          name="project-type"
+          value={form.type}
+          onChange={(type) => setForm((current) => ({ ...current, type }))}
+        />
 
-        {successMessage ? (
-          <div className={styles.successMessage} role="status">
-            {successMessage}
-          </div>
-        ) : null}
-
-        <fieldset
-          className={styles.fieldset}
-          aria-describedby={errors.projectType ? projectTypeErrorId : undefined}
-        >
-          <legend className={styles.legend}>プロジェクトタイプ</legend>
-          <div className={styles.projectTypeGrid}>
-            {projectTypeOptions.map((option) => {
-              const inputId = `project-type-${option.value.toLocaleLowerCase()}`;
-              const isSelected = formValues.projectType === option.value;
-
-              return (
-                <label
-                  key={option.value}
-                  className={`${styles.projectTypeCard} ${
-                    isSelected ? styles.projectTypeCardSelected : ""
-                  }`}
-                  htmlFor={inputId}
-                >
-                  <input
-                    className={styles.visuallyHiddenInput}
-                    type="radio"
-                    id={inputId}
-                    name="projectType"
-                    value={option.value}
-                    checked={isSelected}
-                    aria-invalid={Boolean(errors.projectType)}
-                    onChange={() => handleProjectTypeChange(option.value)}
-                  />
-                  <span className={styles.projectTypeIcon} aria-hidden="true">
-                    {option.icon}
-                  </span>
-                  <span className={styles.projectTypeLabel}>{option.label}</span>
-                  <span className={styles.projectTypeDescription}>{option.description}</span>
-                </label>
-              );
-            })}
-          </div>
-          {errors.projectType ? (
-            <p className={styles.errorText} id={projectTypeErrorId}>
-              {errors.projectType}
-            </p>
-          ) : null}
-        </fieldset>
-
-        <div className={styles.fieldGroup}>
+        <div className={styles.field}>
           <label className={styles.label} htmlFor="project-name">
-            プロジェクト名 <span className={styles.requiredMark}>*</span>
+            プロジェクト名 <span className={styles.required} aria-hidden="true">*</span>
+            <span className={styles.srOnly}>（必須）</span>
           </label>
           <input
-            className={styles.textInput}
             id="project-name"
-            name="projectName"
+            ref={nameInputRef}
+            className={styles.input}
             type="text"
-            value={formValues.projectName}
+            value={form.name}
             placeholder="例: 共同生活費、東京旅行"
-            aria-invalid={Boolean(errors.projectName)}
-            aria-describedby={errors.projectName ? projectNameErrorId : undefined}
-            onChange={(event) =>
-              updateFormValues({ ...formValues, projectName: event.target.value })
-            }
+            aria-invalid={nameError ? true : undefined}
+            aria-describedby={nameError ? nameErrorId : undefined}
+            onChange={(event) => {
+              const value = event.target.value;
+              setForm((current) => ({ ...current, name: value }));
+              if (nameError && value.trim()) {
+                setNameError("");
+              }
+            }}
           />
-          {errors.projectName ? (
-            <p className={styles.errorText} id={projectNameErrorId}>
-              {errors.projectName}
-            </p>
-          ) : null}
+          {nameError ? <FieldError id={nameErrorId} message={nameError} /> : null}
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className={styles.field}>
           <label className={styles.label} htmlFor="project-description">
-            説明 <span className={styles.optionalText}>任意</span>
+            説明 <span className={styles.optional}>（任意）</span>
           </label>
           <textarea
-            className={styles.textarea}
             id="project-description"
-            name="description"
-            value={formValues.description}
+            className={styles.textarea}
+            value={form.description}
             placeholder="プロジェクトの簡単な説明..."
-            rows={4}
-            onChange={(event) =>
-              updateFormValues({ ...formValues, description: event.target.value })
-            }
+            rows={3}
+            onChange={(event) => {
+              const value = event.target.value;
+              setForm((current) => ({ ...current, description: value }));
+            }}
           />
         </div>
 
-        <div className={styles.fieldGroup}>
+        <div className={styles.field}>
           <label className={styles.label} htmlFor="project-currency">
             通貨
           </label>
           <div className={styles.currencyRow}>
             <input
-              className={`${styles.textInput} ${styles.currencyInput}`}
               id="project-currency"
-              name="currency"
+              className={styles.input}
               type="text"
               value="JPY (¥)"
               readOnly
-              aria-describedby="project-currency-note"
+              disabled
             />
-            <span className={styles.fixedBadge} id="project-currency-note">
-              固定
-            </span>
+            <span className={styles.currencyNote}>近日対応予定</span>
           </div>
         </div>
 
-        <fieldset
-          className={styles.fieldset}
-          aria-describedby={errors.roundingUnit ? roundingUnitErrorId : undefined}
-        >
-          <legend className={styles.legend}>端数処理単位</legend>
-          <div className={styles.roundingGrid}>
-            {roundingUnitOptions.map((option) => {
-              const inputId = `rounding-unit-${option.value}`;
-              const isSelected = formValues.roundingUnit === option.value;
+        <RoundingUnitSelector
+          name="rounding-unit"
+          value={form.roundingUnit}
+          onChange={(roundingUnit) => setForm((current) => ({ ...current, roundingUnit }))}
+        />
 
-              return (
-                <label
-                  key={option.value}
-                  className={`${styles.roundingOption} ${
-                    isSelected ? styles.roundingOptionSelected : ""
-                  }`}
-                  htmlFor={inputId}
-                >
-                  <input
-                    className={styles.visuallyHiddenInput}
-                    type="radio"
-                    id={inputId}
-                    name="roundingUnit"
-                    value={option.value}
-                    checked={isSelected}
-                    aria-invalid={Boolean(errors.roundingUnit)}
-                    onChange={() => handleRoundingUnitChange(option.value)}
-                  />
-                  {option.label}
-                </label>
-              );
-            })}
-          </div>
-          {errors.roundingUnit ? (
-            <p className={styles.errorText} id={roundingUnitErrorId}>
-              {errors.roundingUnit}
-            </p>
-          ) : null}
-        </fieldset>
+        <MemberListEditor
+          members={form.members}
+          onAdd={handleAddMember}
+          onRemove={handleRemoveMember}
+          error={membersError}
+          errorId={membersErrorId}
+          inputRef={memberInputRef}
+        />
 
-        <fieldset
-          className={styles.fieldset}
-          aria-describedby={errors.members ? membersErrorId : "members-help-text"}
-        >
-          <legend className={styles.legend}>メンバー</legend>
-          <p className={styles.helpText} id="members-help-text">
-            メンバーはこのプロジェクト内だけの参加者です。アカウント作成は不要です。
+        {createProjectMutation.isError ? (
+          <p className={styles.apiError} role="alert">
+            プロジェクトを作成できませんでした。入力内容を確認して、もう一度お試しください。
           </p>
-          <div className={styles.memberList}>
-            {formValues.members.map((member, index) => {
-              const memberInputId = `member-name-${member.id}`;
+        ) : null}
 
-              return (
-                <div className={styles.memberRow} key={member.id}>
-                  <label className={styles.memberLabel} htmlFor={memberInputId}>
-                    メンバー {index + 1}
-                  </label>
-                  <input
-                    className={styles.textInput}
-                    id={memberInputId}
-                    name={memberInputId}
-                    type="text"
-                    value={member.name}
-                    placeholder="メンバー名を入力"
-                    aria-invalid={Boolean(errors.members && memberNames.length === 0)}
-                    aria-describedby={errors.members ? membersErrorId : undefined}
-                    ref={(element) => {
-                      memberInputRefs.current[member.id] = element;
-                    }}
-                    onChange={(event) => handleMemberNameChange(member.id, event.target.value)}
-                  />
-                  <button
-                    className={styles.removeMemberButton}
-                    type="button"
-                    onClick={() => handleRemoveMember(member.id)}
-                    aria-label={`メンバー ${index + 1} の入力行を削除`}
-                  >
-                    削除
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-          <button className={styles.addMemberButton} type="button" onClick={handleAddMember}>
-            <span aria-hidden="true">＋</span>
-            追加
-          </button>
-          {errors.members ? (
-            <p className={styles.errorText} id={membersErrorId}>
-              {errors.members}
-            </p>
-          ) : null}
-        </fieldset>
-
-        <div className={styles.actions}>
-          <Link className={styles.secondaryAction} to="/">
-            キャンセル
-          </Link>
-          <button className={styles.primaryAction} type="submit">
-            プロジェクトを作成
-          </button>
-        </div>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={createProjectMutation.isPending}
+        >
+          {createProjectMutation.isPending ? "作成中..." : "プロジェクトを作成"}
+        </button>
       </form>
     </div>
   );

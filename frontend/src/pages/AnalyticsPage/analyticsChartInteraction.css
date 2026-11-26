@@ -1,0 +1,12 @@
+/* Dedicated DEV Analytics only; existing chart typography/geometry is unchanged. */
+:where([data-analytics-v4]) .f-chart{position:relative;--chart-area-opacity:.16}
+[data-analytics-v4][data-theme=dark] .f-chart{--chart-area-opacity:.12}
+:where([data-analytics-v4]) .chart-point-hit{cursor:pointer;outline:none}
+:where([data-analytics-v4]) .chart-point-hit:focus-visible{stroke:var(--green);stroke-width:2;stroke-dasharray:3 3}
+:where([data-analytics-v4]) .chart-point-badge{position:absolute;left:0;top:0;z-index:3;pointer-events:none;max-width:min(calc(100% - 16px),calc(100vw - 16px));overflow-wrap:anywhere;padding:12px 14px;border:1px solid var(--border);border-radius:9px;background:var(--card);color:var(--text);box-shadow:0 6px 20px var(--color-shadow);font-size:12px;line-height:1.6;font-variant-numeric:tabular-nums}
+:where([data-analytics-v4]) .chart-point-badge small{display:block;color:var(--muted);font-size:inherit}
+:where([data-analytics-v4]) .chart-point-badge strong{display:block;font-size:18px}
+:where([data-analytics-v4]) .chart-point-change{display:flex;align-items:center;flex-wrap:wrap;gap:8px;color:var(--muted)}
+:where([data-analytics-v4]) .chart-point-change[data-direction=increase]{color:var(--red)}
+:where([data-analytics-v4]) .chart-point-change[data-direction=decrease]{color:var(--negative)}
+:where([data-analytics-v4]) .chart-point-change b{font-size:16px}

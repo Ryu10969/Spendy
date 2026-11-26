@@ -1,0 +1,2 @@
+.panel { position: fixed; inset: auto; visibility: hidden; box-sizing: border-box; margin: 0; min-width: 0; border: var(--border-default); border-radius: var(--radius-lg); background: var(--color-background-elevated); color: var(--color-text-primary); box-shadow: var(--shadow-sm); z-index: calc(var(--z-index-modal) + 1); overflow-y: auto; overscroll-behavior: contain; font-size: var(--font-size-md); line-height: var(--line-height-base); }
+.inline { position: static; visibility: visible; width: 100%; max-width: 100%; margin-top: var(--space-2); box-shadow: none; }
