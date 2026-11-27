@@ -22,9 +22,6 @@ export function AppShell() {
         <AppSidebar theme={theme} onToggleTheme={toggleTheme} active={sidebarActive} />
         <main className={styles.content} id="main-content" tabIndex={-1}>
           {!home && path !== "/analytics" ? <AppContextNavigation /> : null}
-          {globalThis.__SPENDINGMATE_PORTFOLIO_DEMO__ ? <p className={styles.demoNotice}>
-            架空データ専用の共有台帳です。アクセスできる人は全員が閲覧・変更でき、データは初期化されることがあります。個人情報や実データは入力しないでください。
-          </p> : null}
           <Outlet />
         </main>
       </div>
