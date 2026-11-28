@@ -19,8 +19,8 @@ const money = load("utils/formatMoney.ts");
 const { ProjectCard } = load("features/projects/components/ProjectCard.tsx", {
   "react-router-dom": { Link: ({ to, children, ...props }) => jsx.jsx("a", { ...props, href: to, children }) },
   "../../../utils/formatMoney": money, "./ProjectTypeBadge": { ProjectTypeBadge: () => null },
-  "../../../assets/projects/default-continuous.webp": { __esModule: true, default: "continuous.webp" },
-  "../../../assets/projects/default-event.webp": { __esModule: true, default: "event.webp" },
+  "../../../assets/projects/default-continuous.svg?no-inline": { __esModule: true, default: "continuous.svg" },
+  "../../../assets/projects/default-event.svg?no-inline": { __esModule: true, default: "event.svg" },
 });
 const values = [9999, 10000, 99999, 100000, 999999, 1000000, 9999999, 99999999, 999999999];
 for (const type of ["CONTINUOUS", "EVENT"]) for (const status of ["ACTIVE", "ARCHIVED"]) for (const amount of values) {

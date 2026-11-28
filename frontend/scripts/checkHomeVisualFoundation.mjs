@@ -22,7 +22,7 @@ function load(relative, imports = {}) {
 }
 
 const { revealHomeTheme } = load("../src/pages/HomePage/homeThemeTransition.ts");
-for (const mode of ["supported", "reduced", "unsupported", "no-animation", "no-clip-path", "no-css", "no-match-media", "start-error", "snapshot-error", "animation-error", "update-error"]) {
+for (const mode of ["supported", "minified-duration", "reduced", "unsupported", "no-animation", "no-clip-path", "no-css", "no-match-media", "start-error", "snapshot-error", "animation-error", "update-error"]) {
   let updates = 0;
   let starts = 0;
   let animation;
@@ -32,7 +32,8 @@ for (const mode of ["supported", "reduced", "unsupported", "no-animation", "no-c
   globalThis.CSS = { supports: () => mode !== "no-clip-path" };
   if (mode === "no-css") delete globalThis.CSS;
   if (mode === "no-match-media") delete globalThis.window.matchMedia;
-  globalThis.getComputedStyle = () => ({ getPropertyValue: (key) => key.endsWith("duration") ? "560ms" : "ease-in-out" });
+  const durationToken = mode === "minified-duration" ? " .56s " : "560ms";
+  globalThis.getComputedStyle = () => ({ getPropertyValue: (key) => key.endsWith("duration") ? durationToken : "ease-in-out" });
   globalThis.document = {
     documentElement: {
       setAttribute: (name, value) => attributes.set(name, value),
@@ -58,7 +59,7 @@ for (const mode of ["supported", "reduced", "unsupported", "no-animation", "no-c
   assert.equal(updates, 1, `${mode}: switch exactly once`);
   assert.equal(attributes.size, 0, `${mode}: remove document animation scope`);
   assert.equal(starts, ["reduced", "unsupported", "no-animation", "no-clip-path", "no-css", "no-match-media"].includes(mode) ? 0 : 1);
-  if (mode === "supported") {
+  if (mode === "supported" || mode === "minified-duration") {
     assert.deepEqual(animation.frames.clipPath, ["circle(0px at 0px 0px)", `circle(${Math.hypot(1536, 1024)}px at 0px 0px)`]);
     assert.equal(animation.options.pseudoElement, "::view-transition-new(root)");
     assert.equal(animation.options.duration, 560);
@@ -321,12 +322,12 @@ const money = load("../src/utils/formatMoney.ts");
 const { ProjectTypeBadge } = load("../src/features/projects/components/ProjectTypeBadge.tsx");
 const { ProjectCard } = load("../src/features/projects/components/ProjectCard.tsx", {
   "react-router-dom": { Link }, "../../../utils/formatMoney": money, "./ProjectTypeBadge": { ProjectTypeBadge },
-  "../../../assets/projects/default-continuous.webp": { __esModule: true, default: "continuous.webp" },
-  "../../../assets/projects/default-event.webp": { __esModule: true, default: "event.webp" },
+  "../../../assets/projects/default-continuous.svg?no-inline": { __esModule: true, default: "continuous.svg" },
+  "../../../assets/projects/default-event.svg?no-inline": { __esModule: true, default: "event.svg" },
 });
 const project = { id: "test", publicToken: "test-token", name: "Test Project", type: "EVENT", status: "ACTIVE", members: [{ id: "member" }],
   summary: { totalExpenseYen: 1234n, expenseCount: 2, balanceYen: 0n, pendingSettlementCount: 0, lastUpdatedLabel: "10月22日" } };
-for (const [type, status, image] of [["CONTINUOUS", "ACTIVE", "continuous.webp"], ["EVENT", "ACTIVE", "event.webp"], ["EVENT", "ARCHIVED", "event.webp"]]) {
+for (const [type, status, image] of [["CONTINUOUS", "ACTIVE", "continuous.svg"], ["EVENT", "ACTIVE", "event.svg"], ["EVENT", "ARCHIVED", "event.svg"]]) {
   for (const balanceYen of [0n, 10500n, -10500n]) {
     const markup = renderToStaticMarkup(ProjectCard({ project: { ...project, type, status, summary: { ...project.summary, balanceYen } }, onDelete() {} }));
     assert.ok(markup.includes(`src="${image}"`));

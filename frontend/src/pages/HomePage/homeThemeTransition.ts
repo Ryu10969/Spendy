@@ -24,10 +24,13 @@ export async function revealHomeTheme(update: () => void, shell: HTMLElement) {
       transition.skipTransition();
     } else {
       const styles = getComputedStyle(shell);
+      // The production CSS optimizer can express the token in seconds.
+      const durationToken = styles.getPropertyValue("--home-reveal-duration").trim();
+      const durationMs = Number.parseFloat(durationToken) * (durationToken.endsWith("ms") ? 1 : 1000);
       document.documentElement.animate(
         { clipPath: ["circle(0px at 0px 0px)", `circle(${Math.hypot(window.innerWidth, window.innerHeight)}px at 0px 0px)`] },
         {
-          duration: Number.parseFloat(styles.getPropertyValue("--home-reveal-duration")),
+          duration: durationMs,
           easing: styles.getPropertyValue("--home-reveal-easing").trim(),
           pseudoElement: "::view-transition-new(root)",
         },

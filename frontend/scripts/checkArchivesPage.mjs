@@ -27,8 +27,8 @@ const money = load("../src/utils/formatMoney.ts");
 const { ProjectTypeBadge } = load("../src/features/projects/components/ProjectTypeBadge.tsx");
 const { ProjectCard } = load("../src/features/projects/components/ProjectCard.tsx", {
   "react-router-dom": { Link }, "../../../utils/formatMoney": money, "./ProjectTypeBadge": { ProjectTypeBadge },
-  "../../../assets/projects/default-continuous.webp": { __esModule: true, default: "continuous.webp" },
-  "../../../assets/projects/default-event.webp": { __esModule: true, default: "event.webp" },
+  "../../../assets/projects/default-continuous.svg?no-inline": { __esModule: true, default: "continuous.svg" },
+  "../../../assets/projects/default-event.svg?no-inline": { __esModule: true, default: "event.svg" },
 });
 const { EmptyState } = load("../src/components/common/EmptyState.tsx");
 const client = new QueryClient({ defaultOptions: { queries: { retry: false } } });

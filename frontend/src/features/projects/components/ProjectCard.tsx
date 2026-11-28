@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ProjectListItem } from "../../../types/project";
-import continuousImage from "../../../assets/projects/default-continuous.webp";
-import eventImage from "../../../assets/projects/default-event.webp";
+import continuousImage from "../../../assets/projects/default-continuous.svg?no-inline";
+import eventImage from "../../../assets/projects/default-event.svg?no-inline";
 import { formatYen } from "../../../utils/formatMoney";
 import { ProjectTypeBadge } from "./ProjectTypeBadge";
 import styles from "./ProjectCard.module.css";
